@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom background gradient animation */
+        body {
+            background: linear-gradient(135deg, #293647, #403060);
+            background-size: 400% 400%;
+            animation: gradientMove 8s ease infinite;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Custom hover underline animation */
+        .hover-underline-animation {
+            position: relative;
+            color: white;
+        }
+
+        .hover-underline-animation::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff9f1c; /* Customize this color */
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            max-width: 600px;
+            min-width: 350px;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 80px auto 0; /* Adjusted to account for header */
+        }
+
+        main {
+            flex: 1;
+            padding-bottom: 20px; /* To prevent content from overlapping footer */
+        }
+
+
+
+        /* Dropdown container */
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 50;
+}
+
+.hidden {
+    display: none;
+}
+
+.group:hover .group-hover\:block {
+    display: block;
+}
+
+.hover-underline-animation {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hover-underline-animation::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: yellow;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* Tailwind class for the dropdown */
+.bg-white {
+    background-color: white;
+}
+
+.shadow-lg {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.block {
+    display: block;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.hover\:bg-gray-200:hover {
+    background-color: #000; /* Tailwind's gray-200 */
+}
+
+.right-sidebar {
+    float: inherit;
+    width: 250px; /* Adjust the width as needed */
+    padding: 10px;
+    margin-right: 20px; /* Adjust this to control distance from the edge */
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    
+}
+
+.right-sidebar h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.right-sidebar p {
+    font-size: 0.9em;
+}
+
+.right-sidebar .btn {
+    margin-top: 10px;
+    color: blue;
+}
+
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header Section -->
+    <header class="bg-gray-800 text-white py-4 px-8 flex justify-between items-center">
+        <!-- Logo Section -->
+        <div class="flex items-center space-x-3">
+            <img src="{% static 'images/Getyourtutorlogo.png'%}" alt="Logo" class="h-10 mr-4"> <!-- Replace with your actual logo -->
+            <h1 class="text-2xl font-bold">GetYourTutor</h1>
+        </div>
+    
+<!-- Desktop Navigation Links -->
+<nav class="hidden md:flex space-x-6">
+
+        <!-- Forum Dropdown Menu -->
+        <ul class="relative group">
+            <li class="hover-underline-animation">
+                <a href="#" class="hover-underline-animation">Forum</a>
+                
+                <!-- Dropdown Menu -->
+                <ul class="absolute hidden group-hover:block bg-black shadow-lg p-4 rounded-lg">
+                    {% for subject in subjects %}
+                        <li>
+                            <a href="{% url 'forum_by_subject' subject.id %}" class="block px-4 py-2 hover:bg-gray-700">{{ subject.name }}</a>
+                        </li>
+                    {% empty %}
+                        <li>No subjects available</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    <a href="{% url 'logout' %}" class="hover-underline-animation">Logout</a>
+    <a href="{% url 'search_teachers' %}" class="hover-underline-animation">Search Teachers</a>
+    
+
+</nav>
+
+            
+        <!-- Hamburger Button (visible on mobile) -->
+        <div class="md:hidden">
+            <button id="hamburger" class="text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    
+        <!-- Mobile Menu (initially hidden) -->
+        <div id="mobileMenu" class="hidden flex flex-col absolute top-16 left-0 w-full bg-gray-800 text-white">
+  
+            <a href="{% url 'logout' %}" class="block py-2 px-4 hover:bg-gray-700">Logout</a>
+            <a href="{% url 'search_teachers' %}" class="block py-2 px-4 hover:bg-gray-700">Search Teachers</a>
+                              <!-- Forum Dropdown Menu -->
+                              <ul class="relative group">
+                                <li class="#">
+                                    <a href="#" class="block py-2 px-4 hover:bg-gray-700">Forum</a>
+                                    
+                                    <!-- Dropdown Menu -->
+                                    <ul class="absolute hidden group-hover:block bg-black shadow-lg p-4 rounded-lg">
+                                        {% for subject in subjects %}
+                                            <li>
+                                                <a href="{% url 'forum_by_subject' subject.id %}" class="block py-2 px-4 hover:bg-gray-700">{{ subject.name }}</a>
+                                            </li>
+                                        {% empty %}
+                                            <li>No subjects available</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+        </div>
+    </header>
+    
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+    
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto py-8 px-4">
+        <!-- Welcome Section -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-100">Welcome to your Student Dashboard, {{ student.username }}!</h2>
+            <p class="text-gray-300">Here you can view your schedule, classes, and other information.</p>
+            <div class="right-sidebar">
+                <h3>Support Us!</h3>
+                <p>If you have any school, model, or A-level papers, you can support us by uploading them!</p>
+                <p><a href="{% url 'upload_paper' %}" class="btn btn-primary">Upload Your Papers</a></p>
+            </div>  
+        </section>
+     
+
+        <!-- Assigned Teachers Section -->
+        <section>
+            <h2 class="text-xl font-semibold text-gray-100 mb-4">Assigned Teachers</h2>
+        
+            {% if teachers %}
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for teacher in teachers %}
+                        <!-- Teacher Card with lighter grayish-white background -->
+                        <div class="bg-gray-100 rounded-lg shadow-md p-6 space-y-4">
+                            <h2 class="text-2xl font-bold text-gray-800">{{ teacher.username }}</h2>
+                            <p class="text-gray-700">Your Class Schedule with {{ teacher.username }}:</p>
+        
+                            <div class="max-h-60 overflow-y-auto">
+                                <ul class="space-y-2">
+                                    {% for schedule in class_schedules %}
+                                        {% if schedule.teacher == teacher %}
+                                            <li class="bg-gray-200 p-4 rounded-lg shadow-inner">
+                                                <!-- Schedule Display Logic -->
+
+                                                {% if schedule.status == 'pending' %}
+                                                    <!-- Pending Schedule Logic -->
+                                                    <div>
+                                                        <p><strong>Teacher's Proposed Time:</strong> {{ schedule.proposed_time_teacher }}</p>
+                                                        <p><strong>Your Proposed Time:</strong> {{ schedule.proposed_time_student }}</p>
+
+                                                        {% if schedule.proposed_time_teacher and not schedule.proposed_time_student %}
+                                                            <form action="{% url 'confirm_time' schedule.id %}" method="POST" class="mt-2 space-x-2">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Confirm</button>
+                                                            </form>
+                                                            <form action="{% url 'decline_time' schedule.id %}" method="POST" class="mt-2 space-x-2">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Decline</button>
+                                                            </form>
+                                                        {% endif %}
+                                                    </div>
+                                                {% elif schedule.status == 'confirmed' %}
+                                                    <p><strong>Confirmed Time:</strong> {{ schedule.confirmed_time }}</p>
+                                                {% elif schedule.status == 'declined' %}
+                                                    <p class="text-red-500"><strong>Schedule Declined</strong></p>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+        
+                            <!-- Propose a Time Section -->
+                            <h3 class="text-lg font-semibold text-gray-800">Propose a Class Time</h3>
+                            <form method="POST" class="space-y-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="teacher" value="{{ teacher.id }}">
+                                
+                                <!-- Visible Student Proposed Time Field -->
+                                <div class="mt-4">
+                                    <label for="proposed_time_student" class="block font-medium text-gray-700">Proposed Time (Student)</label>
+                                    {{ form.proposed_time_student }}
+                                </div>
+                                
+                                <button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-400">Propose Time</button>
+                            </form>
+        
+                            <!-- Review Link -->
+                            <a href="{% url 'submit_review' teacher.id %}" class="mt-4 inline-block px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-400">
+                                Submit Review for {{ teacher.username }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-600">You do not have any assigned teachers yet.</p>
+            {% endif %}
+        </section>
+        
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer bg-gray-800 text-white py-2 w-full">
+        <div class="text-center">
+            <div class="footer-logo text-xl font-bold">GetYourTutor</div>
+            <p class="slogan mt-1">Helping everyone succeed in education.</p>
+
+            <div class="contact-info mt-2 text-sm">
+                <p>Email: getyourtutor@gmail.com</p>
+                <p>Phone: +94 70 717 0688</p>
+                <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

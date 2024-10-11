@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Accepted Teachers</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+            padding-top: 30px;
+            padding-bottom: 50px;
+        }
+        .menu-icon {
+            display: none;
+        }
+
+        /* For scrollable teacher list */
+        .teacher-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Scrollable confirmed schedule */
+        .confirmed-schedule {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+            }
+            .nav-links.active {
+                display: block;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                text-align: center;
+            }
+            .nav-links a {
+                display: block;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-purple-300 via-pink-300 to-blue-200">
+
+<!-- Header Section -->
+<header class="flex justify-between items-center bg-white p-4 w-full fixed top-0">
+    <div class="flex items-center justify-between w-full">
+        <div class="flex items-center">
+            <!-- Logo -->
+            <img src="{% static 'images/Getyourtutorlogo.png' %}" alt="GetYourTutor Logo" class="h-10 mr-2">
+            <!-- Site Name -->
+            <div class="text-xl font-bold">GetYourTutor - Admin</div>
+        </div>
+
+        <!-- Right section: Navigation Links and Menu Icon -->
+        <div class="hidden md:flex md:flex-row space-x-4 md:ml-auto">
+            <a href="{% url 'admin_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Dashboard</a>
+            <a href="{% url 'admin_teacher_requests' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Requests</a>
+            <a href="{% url 'admin_teacher_overview' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Overview</a>
+            <a href="{% url 'logout' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Logout</a>
+        </div>
+
+        <!-- Hamburger Menu Icon for mobile -->
+        <div class="menu-icon text-2xl cursor-pointer md:hidden" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="nav-links hidden flex-col md:hidden space-y-4 absolute bg-white w-full left-0 top-16">
+    <a href="{% url 'admin_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Dashboard</a>
+    <a href="{% url 'admin_teacher_requests' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Requests</a>
+    <a href="{% url 'admin_teacher_overview' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Overview</a>
+    <a href="{% url 'logout' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Logout</a>
+</div>
+
+<script>
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('hidden');
+        navLinks.classList.toggle('flex');
+    }
+</script>
+
+<!-- Main Content Section -->
+<main class="flex flex-col items-center justify-center w-full mt-20 px-4">
+    <div class="text-center max-w-3xl">
+        <h2 class="text-4xl font-bold mb-6">Accepted Teachers Overview</h2>
+
+        <!-- Teachers List Section -->
+        <section class="bg-white shadow-lg p-6 rounded-lg w-full">
+            <h3 class="text-2xl font-semibold mb-4">Teacher List</h3>
+
+            <div class="teacher-list overflow-y-auto">
+                <ul class="space-y-4">
+                    {% for teacher in teachers %}
+                    <li class="border-b py-4">
+                        <h4 class="text-lg font-semibold">{{ forloop.counter }}. {{ teacher.full_name }} ({{ teacher.username }})</h4>
+                        <button onclick="toggleDetails('details-{{ forloop.counter }}')" class="text-blue-500 hover:underline">View Details</button>
+                        
+                        <!-- Hidden Details Section -->
+                        <div id="details-{{ forloop.counter }}" class="hidden">
+                            <p><strong>Town:</strong> {{ teacher.town }}</p>
+                            <p><strong>Subject:</strong> {{ teacher.subject }}</p>
+                            <p><strong>Phone Number:</strong> {{ teacher.phone_number }}</p>
+                            <p><strong>Average Rating:</strong> {{ teacher.avg_rating|default_if_none:"No ratings yet" }} / 5</P>
+
+                            <!-- NIC and A-level result sheet -->
+                            <p>
+                                {% if teacher.nic_photo %}
+                                    <a href="{{ teacher.nic_photo.url }}" target="_blank">View NIC Photo</a>
+                                {% else %}
+                                    <span>No NIC Photo available</span>
+                                {% endif %}
+                                |
+                                {% if teacher.alevel_result_sheet %}
+                                    <a href="{{ teacher.alevel_result_sheet.url }}" target="_blank">View A-Level Result Sheet</a>
+                                {% else %}
+                                    <span>No A-Level Result Sheet available</span>
+                                {% endif %}
+                            </p>
+
+                            <!-- Students taught -->
+                            <h4>Students:</h4>
+                            <ul>
+                                {% for request in teacher.teacher_requests.all %}
+                                    {% if request.status == 'accepted' %}
+                                        <li>{{ request.student.full_name }} ({{ request.student.username }})</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+
+                            <!-- Confirmed Classes -->
+                            <h4>Confirmed Classes:</h4>
+                            <div class="confirmed-schedule">
+                                <ul>
+                                    {% for schedule in teacher.teacher_classes.all %}
+                                        {% if schedule.status == 'confirmed' %}
+                                            <li>
+                                                <strong>Student:</strong> {{ schedule.student.username }} <br>
+                                                <strong>Confirmed Time:</strong> {{ schedule.confirmed_time|date:"Y-m-d H:i" }}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <!-- Remove Teacher Button -->
+                            <form action="{% url 'delete_teacher' teacher.id %}" method="POST" class="mt-4">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Remove Teacher</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- Footer Section -->
+<footer class="footer bg-white text-gray-700 py-4 w-full">
+    <div class="text-center">
+        <div class="footer-logo text-2xl font-bold">GetYourTutor</div>
+        <p class="slogan mt-2">Helping everyone succeed in education.</p>
+
+        <div class="footer-links mt-4">
+            <ul class="flex justify-center space-x-4">
+                <li><a href="{% url 'admin_dashboard' %}" class="hover:underline">Dashboard</a></li>
+                <li><a href="{% url 'admin_teacher_requests' %}" class="hover:underline">Teacher Requests</a></li>
+                <li><a href="{% url 'admin_teacher_overview' %}" class="hover:underline">Teacher Overview</a></li>
+            </ul>
+        </div>
+
+        <div class="contact-info mt-4">
+            <p>Email: getyourtutor@gmail.com</p>
+            <p>Phone: +94 70 717 0688</p>
+        </div>
+
+        <div class="footer-bottom mt-4 border-t pt-4">
+            <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleDetails(id) {
+        const detailsDiv = document.getElementById(id);
+        if (detailsDiv) {
+            detailsDiv.classList.toggle('hidden');
+        }
+    }
+</script>
+
+</body>
+</html>

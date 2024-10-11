@@ -1,0 +1,175 @@
+<html lang="en">
+    {% load static%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetYourTutor - Home</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+            padding-top: 30px;
+            padding-bottom: 50px; /* Extend the main section */
+        }
+        .menu-icon {
+            display: none;
+        }
+
+        .h-10 mr-2{
+            height:100px;
+            padding-bottom:20px;
+        }
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+            }
+            .nav-links.active {
+                display: block;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                text-align: center;
+            }
+            .nav-links a {
+                display: block;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-purple-300 via-pink-300 to-blue-200">
+
+<!-- Header Section -->
+<header class="flex justify-between items-center bg-white p-4 w-full fixed top-0">
+    <div class="flex items-center justify-between w-full">
+        <!-- Left section: Logo and Site Name -->
+        <div class="flex items-center">
+            <!-- Logo -->
+            <img src="{% static 'images/Getyourtutorlogo.png' %}" alt="GetYourTutor Logo" class="h-10 mr-2">
+            <!-- Site Name -->
+            <div class="text-xl font-bold">
+                GetYourTutor
+            </div>
+        </div>
+
+        <!-- Right section: Navigation Links and Menu Icon -->
+        <div class="hidden md:flex md:flex-row space-x-4 md:ml-auto">
+            <a href="{% url 'home' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Home</a>
+            <a href="{% url 'login' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Login</a>
+            <a href="{% url 'student_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Register</a>
+            <a href="{% url 'teacher_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Register</a>
+            <a href="{% url 'about_us' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">About Us</a>
+            <a href="#" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Contact Us</a>
+        </div>
+
+        <!-- Hamburger Menu Icon for mobile -->
+        <div class="menu-icon text-2xl cursor-pointer md:hidden" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="nav-links hidden flex-col md:hidden space-y-4 absolute bg-white w-full left-0 top-16">
+    <a href="{% url 'home' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Home</a>
+    <a href="{% url 'login' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Login</a>
+    <a href="{% url 'student_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Register</a>
+    <a href="{% url 'teacher_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Register</a>
+    <a href="{% url 'about_us' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">About Us</a>
+    <a href="#" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Contact Us</a>
+</div>
+
+
+<script>
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('hidden');
+        navLinks.classList.toggle('flex');
+    }
+</script>
+
+
+<!-- Body Section -->
+<!-- Body Section -->
+<main class="flex flex-col items-center justify-center w-full mt-20 px-4">
+    <div class="text-center max-w-3xl">
+        <div class="mb-6">
+            <i class="fas fa-graduation-cap text-6xl text-black"></i>
+        </div>
+        <h1 class="text-5xl font-bold text-black mb-4">
+            Your Path to Acing Exams Starts Here!
+        </h1>
+        <p class="text-lg text-gray-700 mb-8">
+            Connecting students with top tutors who've been where you are.
+        </p>
+        <p class="text-base text-gray-700 mb-8 leading-relaxed">
+            For students facing the challenges of O-Level or A-Level exams, success is just a step away. At <strong>GetYourTutor</strong>, we match you with tutors who have recently excelled in their own A-Level exams and know exactly what it takes to succeed. Whether you're looking for help with tricky subjects, exam strategies, or personalized study plans, our experienced tutors are here to guide you.
+        </p>
+        <p class="text-base text-gray-700 mb-8 leading-relaxed">
+            And if you're a recent A-Level graduate with a passion for teaching and a track record of academic excellence, we welcome you to join our community and help the next generation of students achieve their goals.
+        </p>
+        <div class="flex justify-center space-x-4">
+            <a href="{% url 'student_register' %}" class="bg-green-500 text-white px-6 py-3 rounded-full flex items-center space-x-2">
+                <i class="fas fa-rocket"></i>
+                <span>Find Your Perfect Tutor</span>
+            </a>
+            <a href="{% url 'teacher_register' %}" class="bg-gray-200 text-green-500 px-6 py-3 rounded-full flex items-center space-x-2">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Join as a Tutor</span>
+            </a>
+        </div>
+    </div>
+</main>
+
+
+<!-- Footer Section -->
+<footer class="footer bg-white text-gray-700 py-4 w-full">
+    <div class="text-center">
+        <div class="footer-logo text-2xl font-bold">GetYourTutor</div>
+        <p class="slogan mt-2">Helping everyone succeed in education.</p>
+
+        <div class="footer-links mt-4">
+            <ul class="flex justify-center space-x-4">
+                <li><a href="{% url 'student_register' %}" class="hover:underline">Student Register</a></li>
+                <li><a href="{% url 'teacher_register' %}" class="hover:underline">Teacher Register</a></li>
+                <li><a href="{%  url 'about_us' %}" class="hover:underline">About Us</a></li>
+
+            </ul>
+        </div>
+
+        <div class="contact-info mt-4">
+            <p>Email: getyourtutor@gmail.com</p>
+            <p>Phone: +94 70 717 0688</p>
+            <p>WhatsApp: <i class="fab fa-whatsapp" class="inline-block w-6 h-6"></i></p>
+        </div>
+
+        <div class="footer-bottom mt-4 border-t pt-4">
+            <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('active');
+    }
+</script>
+
+</body>
+</html>

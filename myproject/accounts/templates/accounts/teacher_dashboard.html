@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #293647, #403060);
+            background-size: 400% 400%;
+            animation: gradientMove 8s ease infinite;
+            display: flex; /* Added this */
+            flex-direction: column; /* Added this */
+            min-height: 100vh; /* Added this */
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hover-underline-animation {
+            position: relative;
+            color: white;
+        }
+
+        .hover-underline-animation::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff9f1c;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            max-width: 600px;
+            min-width: 350px;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 80px auto 0;
+        }
+
+        /* Main content flex grow */
+        main {
+            flex: 1; /* Allow main content to grow and fill available space */
+        }
+
+        footer {
+            background-color: #2d3748; /* Match the footer color with the header */
+            color: white;
+            padding: 2rem 0; /* Increased padding for better appearance */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="bg-gray-800 text-white py-4 px-8 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <img src="{% static 'images/Getyourtutorlogo.png'%}" alt="Logo" class="h-10 mr-4">
+            <h1 class="text-2xl font-bold">GetYourTutor</h1>
+        </div>
+
+        <nav class="hidden md:flex space-x-6">
+                        <!-- Forum Dropdown Menu -->
+            <ul class="relative group">
+                <li class="hover-underline-animation">
+                    <a href="#" class="hover-underline-animation">Forum</a>
+                    
+                    <!-- Dropdown Menu -->
+                    <ul class="absolute hidden group-hover:block bg-black shadow-lg p-4 rounded-lg">
+                        {% for subject in subjects %}
+                            <li>
+                                <a href="{% url 'forum_by_subject' subject.id %}" class="block px-4 py-2 hover:bg-gray-700">{{ subject.name }}</a>
+                            </li>
+                        {% empty %}
+                            <li>No subjects available</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+            <a href="{% url 'logout' %}" class="hover-underline-animation">Logout</a>
+            <a href="{% url 'about_us' %}" class="hover-underline-animation">About Us</a>
+        </nav>
+
+        <div class="md:hidden">
+            <button id="hamburger" class="text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobileMenu" class="hidden flex flex-col absolute top-16 left-0 w-full bg-gray-800 text-white">
+            <a href="{% url 'logout' %}" class="block py-2 px-4 hover:bg-gray-700">Logout</a>
+            <a href="{% url 'about_us' %}" class="block py-2 px-4 hover:bg-gray-700">About Us</a>
+                                          <!-- Forum Dropdown Menu -->
+                                          <ul class="relative group">
+                                            <li class="#">
+                                                <a href="#" class="block py-2 px-4 hover:bg-gray-700">Forum</a>
+                                                
+                                                <!-- Dropdown Menu -->
+                                                <ul class="absolute hidden group-hover:block bg-black shadow-lg p-4 rounded-lg">
+                                                    {% for subject in subjects %}
+                                                        <li>
+                                                            <a href="{% url 'forum_by_subject' subject.id %}" class="block py-2 px-4 hover:bg-gray-700">{{ subject.name }}</a>
+                                                        </li>
+                                                    {% empty %}
+                                                        <li>No subjects available</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        </ul>
+        </div>
+    </header>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-8 px-4">
+        <!-- Welcome Section -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-100">Welcome to your Teacher Dashboard, {{ teacher.username }}!</h2>
+            <p class="text-gray-300">Here you can manage your students, view class schedules, and more.</p>
+        </section>
+
+        <!-- Assigned Students Section -->
+        <section>
+            <h2 class="text-xl font-semibold text-gray-100 mb-4">Your Students</h2>
+
+            {% if students %}
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for student in students %}
+                        <div class="bg-gray-100 rounded-lg shadow-md p-6 space-y-4">
+                            <h2 class="text-2xl font-bold text-gray-800">{{ student.username }}</h2>
+                            <p class="text-gray-700">Your Class Schedule with {{ student.username }}:</p>
+
+                            <div class="max-h-60 overflow-y-auto">
+                                <ul class="space-y-2">
+                                    {% for schedule in class_schedules %}
+                                        {% if schedule.student == student %}
+                                            <li class="bg-gray-200 p-4 rounded-lg shadow-inner">
+                                                {% if schedule.status == 'pending' %}
+                                                    <div>
+                                                        <p><strong>Proposed Time (Student):</strong> {{ schedule.proposed_time_student }}</p>
+                                                        <p><strong>Your Proposed Time:</strong> {{ schedule.proposed_time_teacher }}</p>
+
+                                                        {% if schedule.proposed_time_student and not schedule.proposed_time_teacher %}
+                                                            <form action="{% url 'confirm_time' schedule.id %}" method="POST" class="mt-2 space-x-2">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Confirm</button>
+                                                            </form>
+                                                            <form action="{% url 'decline_time' schedule.id %}" method="POST" class="mt-2 space-x-2">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Decline</button>
+                                                            </form>
+                                                        {% endif %}
+                                                    </div>
+                                                {% elif schedule.status == 'confirmed' %}
+                                                    <p><strong>Confirmed Time:</strong> {{ schedule.confirmed_time }}</p>
+                                                {% elif schedule.status == 'declined' %}
+                                                    <p class="text-red-500"><strong>Schedule Declined</strong></p>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <h3 class="text-lg font-semibold text-gray-800">Propose a Class Time</h3>
+                            <form method="POST" class="space-y-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="student" value="{{ student.id }}">
+                                <div class="mt-4">
+                                    <label for="proposed_time_teacher" class="block font-medium text-gray-700">Proposed Time (Teacher)</label>
+                                    {{ form.proposed_time_teacher }}
+                                </div>
+
+                                <button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-400">Propose Time</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-600">You do not have any students assigned yet.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer class="footer bg-gray-800 text-white py-2 w-full">
+        <div class="text-center">
+            <div class="footer-logo text-xl font-bold">GetYourTutor</div>
+            <p class="slogan mt-1">Helping everyone succeed in education.</p>
+
+            <div class="contact-info mt-2 text-sm">
+                <p>Email: getyourtutor@gmail.com</p>
+                <p>Phone: +94 70 717 0688</p>
+                <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

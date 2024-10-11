@@ -1,0 +1,6 @@
+<h1>Subjects Forum</h1>
+<ul>
+    {% for subject in subjects %}
+        <li><a href="{% url 'forum_by_subject' subject.id %}">{{ subject.name }}</a></li>
+    {% endfor %}
+</ul>

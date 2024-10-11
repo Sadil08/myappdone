@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Teachers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom background gradient animation */
+        body {
+            background: linear-gradient(135deg, #293647, #403060);
+            background-size: 400% 400%;
+            animation: gradientMove 8s ease infinite;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Custom hover underline animation */
+        .hover-underline-animation {
+            position: relative;
+            color: white;
+        }
+
+        .hover-underline-animation::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff9f1c; /* Customize this color */
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Footer stays at the bottom */
+        main {
+            flex: 1;
+        }
+
+        footer {
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body >
+    <!-- Header Section -->
+    <header class="bg-gray-800 text-white py-4 px-8 flex justify-between items-center">
+        <!-- Logo Section -->
+        <div class="flex items-center space-x-3">
+            <img src="{% static 'images/Getyourtutorlogo.png' %}" alt="Logo" class="h-10 mr-4"> <!-- Replace with your actual logo -->
+            <h1 class="text-2xl font-bold">GetYourTutor</h1>
+        </div>
+    
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex space-x-6">
+            <a href="{% url 'logout' %}" class="hover-underline-animation">Logout</a>
+            <a href="{% url 'about_us' %}" class="hover-underline-animation">About Us</a>
+        </nav>
+    
+        <!-- Hamburger Button (visible on mobile) -->
+        <div class="md:hidden">
+            <button id="hamburger" class="text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    
+        <!-- Mobile Menu (initially hidden) -->
+        <div id="mobileMenu" class="hidden flex flex-col absolute top-16 left-0 w-full bg-gray-800 text-white">
+            <a href="{% url 'logout' %}" class="block py-2 px-4 hover:bg-gray-700">Logout</a>
+            <a href="{% url 'about_us' %}" class="block py-2 px-4 hover:bg-gray-700">About Us</a>
+        </div>
+    </header>
+    
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+    
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto py-8 px-4">
+        <!-- Search Form Section -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Search for Teachers</h2>
+            <form method="GET" action="{% url 'search_teachers' %}" class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
+                <div class="flex flex-col w-1/3">
+                    <label for="district" class="block font-medium text-gray-700">District:</label>
+                    <input type="text" name="district" id="district" class="mt-1 block w-full border-2 border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2">
+                </div>
+                
+                <div class="flex flex-col w-1/3">
+                    <label for="medium" class="block font-medium text-gray-700">Medium:</label>
+                    <select name="medium" id="medium" class="mt-1 block w-full border-2 border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2">
+                        <option value="english">English Medium</option>
+                        <option value="sinhala">Sinhala Medium</option>
+                        <option value="tamil">Tamil Medium</option>
+                    </select>
+                </div>
+                
+                <div class="flex flex-col w-1/3">
+                    <label for="subject" class="block font-medium text-gray-700">Subject:</label>
+                    <input type="text" name="subject" id="subject" class="mt-1 block w-full border-2 border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2">
+                </div>
+                
+                <button type="submit" class="w-1/4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Search</button>
+            </form>
+        </section>
+
+        <!-- Teachers Matching Criteria Section -->
+        <section>
+            <h2 class="text-xl font-semibold text-gray-100 mb-4">Teachers Matching Criteria</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-y-auto max-h-80">
+                {% for teacher in teachers %}
+                    <div class="bg-gray-100 rounded-lg shadow-md p-6 space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-800">{{ teacher.full_name }}</h3>
+                        <p class="text-gray-700">Username: {{ teacher.username }}</p>
+                        <p class="text-gray-700">Subject: {{ teacher.subject }}</p>
+                        <p class="text-gray-700">Town: {{ teacher.town }}</p>
+                        <p class="text-gray-700">Medium: {{ teacher.get_medium_display }}</p>
+                        <p class="text-gray-700">Average Rating: {{ teacher.avg_rating|default_if_none:"No ratings yet" }} / 5</p>
+                        
+                        <form method="post" action="{% url 'request_teacher' teacher.id %}">
+                            {% csrf_token %}
+                            <p class="mt-4">Do you want to request {{ teacher.username }}?</p>
+                            <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Send Request</button>
+                        </form>
+                    </div>
+                {% empty %}
+                    <div class="text-gray-500">No teachers found matching the criteria.</div>
+                {% endfor %}
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer bg-gray-800 text-white py-2 w-full">
+        <div class="text-center">
+            <div class="footer-logo text-xl font-bold">GetYourTutor</div>
+            <p class="slogan mt-1">Helping everyone succeed in education.</p>
+
+            <div class="contact-info mt-2 text-sm">
+                <p>Email: getyourtutor@gmail.com</p>
+                <p>Phone: +94 70 717 0688</p>
+                <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

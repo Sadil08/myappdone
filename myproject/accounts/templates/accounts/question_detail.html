@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Detail</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+            padding-top: 30px;
+            padding-bottom: 50px;
+        }
+        .menu-icon {
+            display: none;
+        }
+
+        /* Styling for form fields */
+        form input, form textarea, form select {
+            width: 100%;
+            border: 2px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .content-container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+            }
+            .nav-links.active {
+                display: block;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                text-align: center;
+            }
+            .nav-links a {
+                display: block;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-purple-300 via-pink-300 to-blue-200">
+
+<!-- Header Section -->
+<header class="flex justify-between items-center bg-white p-4 w-full fixed top-0">
+    <div class="flex items-center justify-between w-full">
+        <div class="flex items-center">
+            <img src="{% static 'images/Getyourtutorlogo.png' %}" alt="GetYourTutor Logo" class="h-10 mr-2">
+            <div class="text-xl font-bold">GetYourTutor - Forum</div>
+        </div>
+
+        <div class="hidden md:flex md:flex-row space-x-4 md:ml-auto">
+            <a href="{% url 'student_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Dashboard</a>
+            <a href="{% url 'logout' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Logout</a>
+        </div>
+
+        <div class="menu-icon text-2xl cursor-pointer md:hidden" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="nav-links hidden flex-col md:hidden space-y-4 absolute bg-white w-full left-0 top-16">
+    <a href="{% url 'student_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Dashboard</a>
+    <a href="{% url 'logout' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Logout</a>
+</div>
+
+<script>
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('hidden');
+        navLinks.classList.toggle('flex');
+    }
+</script>
+
+<!-- Main Content Section -->
+<main class="flex flex-col items-center justify-center w-full mt-20 px-4">
+    <div class="text-center content-container">
+        <!-- Question Section -->
+        <section class="bg-white shadow-lg p-6 rounded-lg w-full mb-8">
+            <h1 class="text-3xl font-bold mb-4">Question</h1>
+            <p class="text-lg mb-6">{{ question.text }}</p>
+
+            {% if question.image %}
+                <img src="{{ question.image.url }}" alt="Question Image" class="mb-4 max-w-full rounded-lg">
+            {% endif %}
+        </section>
+
+        <!-- Answers Section -->
+        <section class="bg-white shadow-lg p-6 rounded-lg w-full mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Answers</h2>
+            <ul class="space-y-4">
+                {% for answer in answers %}
+                    <li class="border-b pb-4">
+                        <p class="text-lg mb-2">{{ answer.text }} <span class="text-gray-600">by {{ answer.author }}</span></p>
+                        {% if answer.image %}
+                            <img src="{{ answer.image.url }}" alt="Answer Image" class="mb-4 max-w-full rounded-lg">
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="text-gray-500">No answers yet. Be the first to answer!</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Submit an Answer Section -->
+        <section class="bg-white shadow-lg p-6 rounded-lg w-full">
+            <h2 class="text-2xl font-semibold mb-4">Submit an Answer</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Post Answer
+                </button>
+            </form>
+        </section>
+    </div>
+</main>
+
+<!-- Footer Section -->
+<footer class="footer bg-white text-gray-700 py-4 w-full">
+    <div class="text-center">
+        <div class="footer-logo text-2xl font-bold">GetYourTutor</div>
+        <p class="slogan mt-2">Helping everyone succeed in education.</p>
+
+        <div class="footer-links mt-4">
+            <ul class="flex justify-center space-x-4">
+                <li><a href="{% url 'student_dashboard' %}" class="hover:underline">Dashboard</a></li>
+                <li><a href="{% url 'search_teachers' %}" class="hover:underline">Search Teachers</a></li>
+            </ul>
+        </div>
+
+        <div class="contact-info mt-4">
+            <p>Email: getyourtutor@gmail.com</p>
+            <p>Phone: +94 70 717 0688</p>
+        </div>
+
+        <div class="footer-bottom mt-4 border-t pt-4">
+            <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
