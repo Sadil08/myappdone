@@ -1,6 +1,21 @@
 # Ignore Python compiled files
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.db
+
+# Django
+*.log
+*.pot
+*.py[cod]
+local_settings.py
+db.sqlite3
+
+# Environment Variables
+.env
 
 # Ignore the virtual environment folder
 myenv/
+
