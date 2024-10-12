@@ -11,6 +11,12 @@ from django.utils.safestring import mark_safe
 
 
 class StudentRegisterForm(UserCreationForm):
+    agree_to_terms = forms.BooleanField(
+    label=mark_safe('I agree to the <a href="/terms/" target="_blank" style="color: blue; text-decoration: underline;">Terms and Conditions</a>'),
+    required=True,
+    )
+
+ 
     class Meta:
         model = CustomUser
         fields = ['full_name','username', 'email', 'age','town', 'district', 'alevel_batch_year','phone_number', 'password1', 'password2']
@@ -19,9 +25,19 @@ class StudentRegisterForm(UserCreationForm):
             'password2': forms.PasswordInput(),
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        agree_to_terms = cleaned_data.get('agree_to_terms')
+
+        # Check if terms and conditions are agreed upon
+        if not agree_to_terms:
+            raise ValidationError('You must agree to the terms and conditions.')
+        
+        
+
 class TeacherRegistrationForm(forms.ModelForm):
     agree_to_terms = forms.BooleanField(
-    label=mark_safe('I agree to the <a href="/terms/" target="_blank">terms and conditions</a>'),
+    label=mark_safe('I agree to the <a href="/terms/" target="_blank" style="color: blue; text-decoration: underline;">Terms and Conditions</a>'),
     required=True,
 )
     class Meta:
@@ -42,7 +58,7 @@ class TeacherRegistrationForm(forms.ModelForm):
 
         if not alevel_result_sheet:
             self.add_error('alevel_result_sheet', 'A-Level result sheet is required.')
-            
+
         # Check if terms and conditions are agreed upon
         if not agree_to_terms:
             raise ValidationError('You must agree to the terms and conditions.')
