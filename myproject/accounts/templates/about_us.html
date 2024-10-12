@@ -18,7 +18,7 @@
         }
         main {
             flex: 1;
-            padding-top: 80px;
+            padding-top: 30px;
             padding-bottom: 50px;
         }
         .menu-icon {
@@ -49,6 +49,29 @@
 
         li{
             list-style: justify;
+        }
+   
+
+        /* Style for terms and conditions */
+        .about-list {
+            list-style: decimal;
+            margin-left: 20px;
+            padding-left: 15px;
+        }
+        .about-list li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+            text-indent: -5px;
+        }
+
+        @media (max-width: 768px) {
+            .about-list {
+                margin-left: 10px;
+                padding-left: 10px;
+            }
+            .about-list li {
+                padding-left: 5px;
+            }
         }
     </style>
 </head>
@@ -117,7 +140,7 @@
         <p class="text-base text-gray-700 mb-8 leading-relaxed">
             At GetYourTutor, we believe that education should be both personal and flexible. Here’s how it works for students:
         </p>
-        <ul class="list-disc list-inside text-base text-gray-700 mb-8 leading-relaxed">
+        <ul class="about-list text-left text-base text-gray-700 leading-relaxed">
             <li>Free Registration: Quick and easy!</li>
             <li>Find Your Ideal Tutor: Search based on language, subject, and location.</li>
             <li>Request a Tutor: Review profiles and send requests.</li>
@@ -131,14 +154,17 @@
         <h2 class="text-3xl font-bold text-black mb-4">
             For Tutors
         </h2>
-        <ol class="text-base text-gray-700 mb-8 leading-relaxed list-decimal list-inside">
+        <p class="text-base text-gray-700 mb-8 leading-relaxed">
+            Are you an academic high-achiever looking to share your knowledge and earn money by teaching? Here’s how you can get started:
+        </p>
+        <ul class="about-list text-left text-base text-gray-700 leading-relaxed">
             <li>Register as a Tutor: Apply to be a tutor, reviewed by our admin team.</li>
             <li>First Class Free: Show your skills to students—your first class is free.</li>
             <li>Tutor Fee: Pay Rs. 1000 per student once connected.</li>
             <li>Conduct Classes: Teach online or in person—it's your call.</li>
             <li>Boost Your Rating: High ratings will help you attract more students.</li>
             <li>Forum Participation: Answering questions in forums boosts visibility.</li>
-        </ol>
+        </ul>
     </div>
 </main>
 
