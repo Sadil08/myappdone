@@ -5,6 +5,8 @@ from .models import ClassSchedule
 from .models import TeacherRequest, Review
 from .models import Question, Answer
 from .models import PaperUpload
+from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 
 
 
@@ -18,6 +20,10 @@ class StudentRegisterForm(UserCreationForm):
         }
 
 class TeacherRegistrationForm(forms.ModelForm):
+    agree_to_terms = forms.BooleanField(
+    label=mark_safe('I agree to the <a href="/terms/" target="_blank">terms and conditions</a>'),
+    required=True,
+)
     class Meta:
         model = CustomUser
         fields = ['full_name', 'username', 'email', 'age', 'nic_photo', 'alevel_result_sheet', 'subject', 'town', 'district', 'medium','phone_number', 'password']
@@ -29,12 +35,17 @@ class TeacherRegistrationForm(forms.ModelForm):
         cleaned_data = super().clean()
         nic_photo = cleaned_data.get('nic_photo')
         alevel_result_sheet = cleaned_data.get('alevel_result_sheet')
+        agree_to_terms = cleaned_data.get('agree_to_terms')
 
         if not nic_photo:
             self.add_error('nic_photo', 'NIC photo is required.')
 
         if not alevel_result_sheet:
             self.add_error('alevel_result_sheet', 'A-Level result sheet is required.')
+            
+        # Check if terms and conditions are agreed upon
+        if not agree_to_terms:
+            raise ValidationError('You must agree to the terms and conditions.')
 
 class AdminRegisterForm(UserCreationForm):
     class Meta:

@@ -26,6 +26,9 @@ def home(request):
 def about_us(request):
     return render(request, 'about_us.html')
 
+def terms_view(request):
+    return render(request, 'terms.html')
+
 
 
 @login_required

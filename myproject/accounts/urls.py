@@ -30,7 +30,8 @@ urlpatterns = [
     path('forum/', views.forum_subjects, name='forum_subjects'),
     path('forum/<int:subject_id>/', views.forum_by_subject, name='forum_by_subject'),
     path('forum/question/<int:question_id>/', views.question_detail, name='question_detail'),
-    path('upload-paper/', upload_paper, name='upload_paper'),
+    path('upload-paper/', views.upload_paper, name='upload_paper'),
+    path('terms/', views.terms_view, name='terms'),
 
     
 ]
