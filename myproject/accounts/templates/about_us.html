@@ -1,0 +1,168 @@
+<html lang="en">
+    {% load static%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetYourTutor - Home</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        main {
+            flex: 1;
+            padding-top: 80px;
+            padding-bottom: 50px;
+        }
+        .menu-icon {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+            }
+            .nav-links.active {
+                display: block;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                text-align: center;
+            }
+            .nav-links a {
+                display: block;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-purple-300 via-pink-300 to-blue-200">
+
+<!-- Header Section -->
+<header class="flex justify-between items-center bg-white p-4 w-full fixed top-0 shadow-lg z-50">
+    <div class="flex items-center justify-between w-full">
+        <!-- Left section: Logo and Site Name -->
+        <div class="flex items-center">
+            <img src="{% static 'images/Getyourtutorlogo.png' %}" alt="GetYourTutor Logo" class="h-10 mr-2">
+            <div class="text-xl font-bold">
+                GetYourTutor
+            </div>
+        </div>
+        <!-- Right section: Navigation Links and Menu Icon -->
+        <div class="hidden md:flex md:flex-row space-x-4 md:ml-auto">
+            <a href="{% url 'home' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Home</a>
+            <a href="{% url 'login' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Login</a>
+            <a href="{% url 'student_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Register</a>
+            <a href="{% url 'teacher_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Register</a>
+            <a href="{% url 'about_us' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">About Us</a>
+            <a href="#" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Contact Us</a>
+        </div>
+
+        <!-- Hamburger Menu Icon for mobile -->
+        <div class="menu-icon text-2xl cursor-pointer md:hidden" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="nav-links hidden flex-col md:hidden space-y-4 absolute bg-white w-full left-0 top-16 shadow-md">
+    <a href="{% url 'home' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Home</a>
+    <a href="{% url 'login' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Login</a>
+    <a href="{% url 'student_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Register</a>
+    <a href="{% url 'teacher_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Register</a>
+    <a href="{% url 'about_us' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">About Us</a>
+    <a href="#" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Contact Us</a>
+</div>
+
+<script>
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('hidden');
+        navLinks.classList.toggle('flex');
+    }
+</script>
+
+<!-- Body Section -->
+<main class="flex flex-col items-center justify-center w-full mt-20 px-4">
+    <div class="text-center max-w-3xl">
+        <div class="mb-6">
+            <i class="fas fa-graduation-cap text-6xl text-black"></i>
+        </div>
+        <h1 class="text-5xl font-bold text-black mb-4">
+            About Us!
+        </h1>
+        <p class="text-lg text-gray-700 mb-8">
+            Welcome to GetYourTutor, the platform designed to connect young tutors with students in a seamless, convenient way. Our goal is to make quality learning accessible to all while providing an opportunity for talented individuals to share their knowledge.
+        </p>
+        <h2 class="text-3xl font-bold text-black mb-4">
+            For Students
+        </h2>
+        <p class="text-base text-gray-700 mb-8 leading-relaxed">
+            At GetYourTutor, we believe that education should be both personal and flexible. Here’s how it works for students:
+        </p>
+        <ul class="list-disc list-inside text-base text-gray-700 mb-8 leading-relaxed">
+            <li>Free Registration: Quick and easy!</li>
+            <li>Find Your Ideal Tutor: Search based on language, subject, and location.</li>
+            <li>Request a Tutor: Review profiles and send requests.</li>
+            <li>Admin Confirmation: Our team will contact you to confirm the tutor.</li>
+            <li>Flexible Class Options: Attend online or in person—your choice!</li>
+            <li>First Class Free: The first class is free for every new tutor.</li>
+            <li>Connection Fee: A one-time fee of Rs. 2500 after confirming the tutor.</li>
+            <li>Subject Forums: Ask questions, get answers from tutors and peers!</li>
+        </ul>
+
+        <h2 class="text-3xl font-bold text-black mb-4">
+            For Tutors
+        </h2>
+        <ul class="list-disc list-inside text-base text-gray-700 mb-8 leading-relaxed">
+            <li>Register as a Tutor: Apply to be a tutor, reviewed by our admin team.</li>
+            <li>First Class Free: Show your skills to students—your first class is free.</li>
+            <li>Tutor Fee: Pay Rs. 1000 per student once connected.</li>
+            <li>Conduct Classes: Teach online or in person—it's your call.</li>
+            <li>Boost Your Rating: High ratings will help you attract more students.</li>
+            <li>Forum Participation: Answering questions in forums boosts visibility.</li>
+        </ul>
+    </div>
+</main>
+
+<!-- Footer Section -->
+<footer class="footer bg-white text-gray-700 py-8 w-full">
+    <div class="text-center">
+        <div class="footer-logo text-2xl font-bold">GetYourTutor</div>
+        <p class="slogan mt-2">Helping everyone succeed in education.</p>
+
+        <div class="footer-links mt-4">
+            <ul class="flex justify-center space-x-4">
+                <li><a href="{% url 'student_register' %}" class="hover:underline">Student Register</a></li>
+                <li><a href="{% url 'teacher_register' %}" class="hover:underline">Teacher Register</a></li>
+                <li><a href="{% url 'about_us' %}" class="hover:underline">About Us</a></li>
+            </ul>
+        </div>
+
+        <div class="contact-info mt-4">
+            <p>Email: getyourtutor@gmail.com</p>
+            <p>Phone: +94 70 717 0688</p>
+            <p>WhatsApp: <i class="fab fa-whatsapp text-green-500"></i> +94 70 717 0688</p>
+        </div>
+
+        <div class="footer-legal mt-4">
+            <p>&copy; 2024 GetYourTutor. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
