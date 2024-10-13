@@ -52,7 +52,7 @@ class TeacherRegistrationForm(forms.ModelForm):
     # Subject is a multiple choice field (Many-to-Many relationship)
     subject = forms.ModelMultipleChoiceField(
         queryset=Subject.objects.all(),  # Assuming Subject is a separate model
-        widget=forms.CheckboxSelectMultiple,  # Display as checkboxes
+        widget=forms.SelectMultiple(attrs={'size': 10}),  # Use SelectMultiple widget for a dropdown list
         required=True,
     )
 
