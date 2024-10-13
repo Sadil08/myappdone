@@ -5,6 +5,7 @@ from .models import ClassSchedule
 from .models import TeacherRequest, Review
 from .models import Question, Answer
 from .models import PaperUpload
+from .models import Subject
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 
@@ -40,12 +41,39 @@ class TeacherRegistrationForm(forms.ModelForm):
     label=mark_safe('I agree to the <a href="/terms/" target="_blank" style="color: blue; text-decoration: underline;">Terms and Conditions</a>'),
     required=True,
 )
+    
+
+        # District is chosen from predefined choices
+    district = forms.ChoiceField(
+        choices=CustomUser.DISTRICT_CHOICES,
+        required=True,
+    )
+    
+    # Subject is a multiple choice field (Many-to-Many relationship)
+    subject = forms.ModelMultipleChoiceField(
+        queryset=Subject.objects.all(),  # Assuming Subject is a separate model
+        widget=forms.CheckboxSelectMultiple,  # Display as checkboxes
+        required=True,
+    )
+
+
     class Meta:
         model = CustomUser
         fields = ['full_name', 'username', 'email', 'age', 'nic_photo', 'alevel_result_sheet', 'subject', 'town', 'district', 'medium','phone_number', 'password']
         widgets = {
             'password': forms.PasswordInput(),
         }
+
+
+    def clean_subject(self):
+        """Custom validation to ensure only 2 subjects are selected."""
+        selected_subjects = self.cleaned_data.get('subject')
+
+        if len(selected_subjects) > 2:
+            raise forms.ValidationError("You can select a maximum of 2 subjects.")
+
+        return selected_subjects
+
 
     def clean(self):
         cleaned_data = super().clean()

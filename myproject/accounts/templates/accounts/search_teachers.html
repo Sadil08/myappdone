@@ -70,6 +70,7 @@
     
         <!-- Desktop Navigation Links -->
         <nav class="hidden md:flex space-x-6">
+            <a href="{% url 'student_dashboard' %}" class="hover-underline-animation">Dashboard</a>
             <a href="{% url 'logout' %}" class="hover-underline-animation">Logout</a>
             <a href="{% url 'about_us' %}" class="hover-underline-animation">About Us</a>
             <a href="{% url 'how_it_works' %}" class="hover-underline-animation">How it works</a>
@@ -86,6 +87,7 @@
     
         <!-- Mobile Menu (initially hidden) -->
         <div id="mobileMenu" class="hidden flex flex-col absolute top-16 left-0 w-full bg-gray-800 text-white">
+            <a href="{% url 'student_dashboard' %}" class="block py-2 px-4 hover:bg-gray-700">Dashboard</a>
             <a href="{% url 'logout' %}" class="block py-2 px-4 hover:bg-gray-700">Logout</a>
             <a href="{% url 'about_us' %}" class="block py-2 px-4 hover:bg-gray-700">About Us</a>
             <a href="{% url 'how_it_works' %}" class="block py-2 px-4 hover:bg-gray-700">How it works</a>

@@ -21,21 +21,64 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     age = models.IntegerField(null=True, blank=True)
     alevel_batch_year = models.IntegerField(null=True, blank=True)  # For students
-    subject = models.CharField(max_length=100, null=True, blank=True)  # For teachers
-    nic_photo = models.ImageField(upload_to=user_directory_path, null=True, blank=True)  # For teachers
-    alevel_result_sheet = models.ImageField(upload_to=user_directory_path, null=True, blank=True)  # For teachers
+    # Make subject a required field for teachers and allow multiple subjects
+    SUBJECT_CHOICES = (
+        ('cm', 'Combined Maths'),
+        ('physics', 'Physics'),
+        ('chemistry', 'Chemistry'),
+        ('biology', 'Biology'),
+        ('english', 'English'),
+        ('accounting', 'Accounting'),
+        ('business', 'Business Studies'),
+        ('econ','Economics'),
+        ('stats', 'Statistics'),
+        ('lmaths', 'London-Maths'),
+        ('lfurthermaths','London-Further Maths'),
+        ('lphysics', 'London-Physics'),
+        ('lchemistry', 'London-Chemistry'),
+        ('lbiology', 'London-Biology'),
+        ('laccounting', 'London-Accounting'),
+        ('maths', 'OL-Maths'),
+        ('science', 'OL- Science'),
+        # Add more subjects as needed
+    )
+    subject = models.ManyToManyField('Subject', blank=False)  # ManyToManyField to allow multiple subject selections
+   
+    nic_photo = models.ImageField(upload_to=user_directory_path)  # For teachers
+    alevel_result_sheet = models.ImageField(upload_to=user_directory_path)  # For teachers
 
         # Add these fields for teachers
-    full_name = models.CharField(max_length=100, null=True, blank=True)
-    town = models.CharField(max_length=100, null=True, blank=True)
-    district = models.CharField(max_length=100, null=True, blank=True)
-    phone_number = models.CharField(max_length=15, null=True, blank=True)  # Adjust max_length as needed
+    full_name = models.CharField(max_length=100)
+    # District choices to select from predefined list
+    DISTRICT_CHOICES = (
+        ('colombo', 'Colombo'),
+        ('gampaha', 'Gampaha'),
+        ('kandy', 'Kandy'),
+        ('galle', 'Galle'),
+        ('matara', 'Matara'),
+        ('jaffna', 'Jaffna'),
+        ('kaluthara','Kaluthara'),
+        ('kurunegala','Kurunegala'),
+        ('matale','Matale'),
+
+        # Add other districts as needed
+    )
+    town = models.CharField(max_length=100)  # Required
+    district = models.CharField(max_length=100, choices=DISTRICT_CHOICES)  # Required and chosen from the list
+    phone_number = models.CharField(max_length=15)  # Adjust max_length as needed
     MEDIUM_CHOICES = (
         ('english', 'English Medium'),
         ('sinhala', 'Sinhala Medium'),
         ('tamil', 'Tamil Medium'),
     )
-    medium = models.CharField(max_length=20, choices=MEDIUM_CHOICES, null=True, blank=True)  # Teaching Medium
+    medium = models.CharField(max_length=20, choices=MEDIUM_CHOICES)  # Teaching Medium
+
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
 
 
 class TeacherRequest(models.Model):
