@@ -229,13 +229,21 @@
                     {{ form.alevel_result_sheet }}
                 </div>
             
-                <!-- Subjects -->
+                <!-- Subjects Selection Field -->
                 <div class="mb-4">
                     <label for="id_subject" class="block font-semibold">Subjects (Select up to 2):</label>
-                    {{ form.subject }}
+                    <select id="subject-select" class="form-control">
+                        {% for subject in form.subject.field.queryset %}
+                            <option value="{{ subject.id }}">{{ subject.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-            
-                <!-- Town -->
+                    <!-- Placeholder for displaying selected subjects -->
+                <div class="mb-4" id="selected-subjects-container">
+                    <label class="block font-semibold">Selected Subjects:</label>
+                    <div id="selected-subjects"></div>
+                </div>
+                            <!-- Town -->
                 <div class="mb-4">
                     <label for="id_town" class="block font-semibold">Town:</label>
                     {{ form.town }}
@@ -319,6 +327,97 @@
         navLinks.classList.toggle('active');
     }
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const subjectSelect = document.getElementById("subject-select");
+        const selectedSubjectsContainer = document.getElementById("selected-subjects");
+
+        // Store selected subjects in an array
+        let selectedSubjects = [];
+
+        // Listen for changes in the subject select dropdown
+        subjectSelect.addEventListener("change", function() {
+            const selectedOption = subjectSelect.options[subjectSelect.selectedIndex];
+            const subjectId = selectedOption.value;
+            const subjectName = selectedOption.text;
+
+            // Check if the subject is already selected
+            if (!selectedSubjects.includes(subjectId) && selectedSubjects.length < 2) {
+                selectedSubjects.push(subjectId);
+
+                // Create an element for the selected subject with a remove option
+                const subjectDiv = document.createElement("div");
+                subjectDiv.setAttribute("data-id", subjectId);
+                subjectDiv.innerHTML = `
+                    ${subjectName} <button class="remove-subject" data-id="${subjectId}">&times;</button>
+                `;
+                selectedSubjectsContainer.appendChild(subjectDiv);
+
+                // Remove subject from the selected list when the "x" is clicked
+                subjectDiv.querySelector(".remove-subject").addEventListener("click", function() {
+                    const idToRemove = this.getAttribute("data-id");
+                    selectedSubjects = selectedSubjects.filter(id => id !== idToRemove);
+
+                    // Remove the subject div
+                    subjectDiv.remove();
+                });
+            } else if (selectedSubjects.length >= 2) {
+                alert("You can only select up to 2 subjects.");
+            }
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const subjectSelect = document.getElementById("subject-select");
+        const selectedSubjectsContainer = document.getElementById("selected-subjects");
+        const form = document.querySelector("form");
+
+        let selectedSubjects = [];
+
+        subjectSelect.addEventListener("change", function() {
+            const selectedOption = subjectSelect.options[subjectSelect.selectedIndex];
+            const subjectId = selectedOption.value;
+            const subjectName = selectedOption.text;
+
+            if (!selectedSubjects.includes(subjectId) && selectedSubjects.length < 2) {
+                selectedSubjects.push(subjectId);
+
+                const subjectDiv = document.createElement("div");
+                subjectDiv.setAttribute("data-id", subjectId);
+                subjectDiv.innerHTML = `
+                    ${subjectName} <button class="remove-subject" data-id="${subjectId}">&times;</button>
+                    <input type="hidden" name="subject" value="${subjectId}">
+                `;
+                selectedSubjectsContainer.appendChild(subjectDiv);
+
+                subjectDiv.querySelector(".remove-subject").addEventListener("click", function() {
+                    const idToRemove = this.getAttribute("data-id");
+                    selectedSubjects = selectedSubjects.filter(id => id !== idToRemove);
+
+                    subjectDiv.remove();
+                });
+            } else if (selectedSubjects.length >= 2) {
+                alert("You can only select up to 2 subjects.");
+            }
+        });
+
+        // Add event listener for form submission to ensure selected subjects are passed
+        form.addEventListener("submit", function() {
+            selectedSubjects.forEach(subjectId => {
+                const hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = "subject";
+                hiddenInput.value = subjectId;
+                form.appendChild(hiddenInput);
+            });
+        });
+    });
+</script>
+
 
 </body>
 </html>

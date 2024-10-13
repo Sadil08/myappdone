@@ -50,8 +50,8 @@ class TeacherRegistrationForm(forms.ModelForm):
     
     # Subject is a multiple select dropdown field (Many-to-Many relationship)
     subject = forms.ModelMultipleChoiceField(
-        queryset=Subject.objects.all(), 
-        widget=forms.SelectMultiple(attrs={'size': 4, 'class': 'form-control'}),
+        queryset=Subject.objects.all(),
+        widget=forms.SelectMultiple(attrs={'id': 'subject-select', 'size': 4, 'class': 'form-control'}),
         required=True,
     )
 
@@ -66,6 +66,11 @@ class TeacherRegistrationForm(forms.ModelForm):
         """Custom validation to ensure only 2 subjects are selected."""
         selected_subjects = self.cleaned_data.get('subject')
 
+        # Ensure 'subject' field was submitted properly
+        if not selected_subjects:
+            raise forms.ValidationError("Please select at least one subject.")
+
+        # Ensure no more than 2 subjects are selected
         if len(selected_subjects) > 2:
             raise forms.ValidationError("You can select a maximum of 2 subjects.")
 
