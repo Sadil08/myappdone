@@ -50,8 +50,8 @@ class TeacherRegistrationForm(forms.ModelForm):
     
     # Subject is a multiple select dropdown field (Many-to-Many relationship)
     subject = forms.ModelMultipleChoiceField(
-        queryset=Subject.objects.all(),  # Assuming Subject is a separate model
-        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),  # Simplified
+        queryset=Subject.objects.all(), 
+        widget=forms.SelectMultiple(attrs={'size': 4, 'class': 'form-control'}),
         required=True,
     )
 

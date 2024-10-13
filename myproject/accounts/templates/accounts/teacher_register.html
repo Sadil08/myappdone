@@ -130,6 +130,14 @@
                 border-bottom: 1px solid #ddd;
             }
         }
+        select.form-control {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
     </style>
 </head>
 <body>
@@ -184,23 +192,92 @@
             <h2 class="form-title">Teacher Registration</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
                 
+                <!-- Full Name -->
                 <div class="mb-4">
-                    <label for="id_subject" class="block text-sm font-medium text-gray-700">Subjects</label>
-                    <select multiple id="id_subject" name="subject" class="form-control">
-                        {% for subject in form.subject %}
-                            <option value="{{ subject.data.value }}">{{ subject.data.label }}</option>
-                        {% endfor %}
-                    </select>
-                    {{ form.subject.errors }}
+                    <label for="id_full_name" class="block font-semibold">Full Name:</label>
+                    {{ form.full_name }}
+                </div>
+                
+                <!-- Username -->
+                <div class="mb-4">
+                    <label for="id_username" class="block font-semibold">Username:</label>
+                    {{ form.username }}
                 </div>
             
-                <!-- Render other form fields -->
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-                    Register
-                </button>
+                <!-- Email -->
+                <div class="mb-4">
+                    <label for="id_email" class="block font-semibold">Email:</label>
+                    {{ form.email }}
+                </div>
+            
+                <!-- Age -->
+                <div class="mb-4">
+                    <label for="id_age" class="block font-semibold">Age:</label>
+                    {{ form.age }}
+                </div>
+            
+                <!-- NIC Photo -->
+                <div class="mb-4">
+                    <label for="id_nic_photo" class="block font-semibold">NIC Photo:</label>
+                    {{ form.nic_photo }}
+                </div>
+            
+                <!-- A-Level Result Sheet -->
+                <div class="mb-4">
+                    <label for="id_alevel_result_sheet" class="block font-semibold">A-Level Result Sheet:</label>
+                    {{ form.alevel_result_sheet }}
+                </div>
+            
+                <!-- Subjects -->
+                <div class="mb-4">
+                    <label for="id_subject" class="block font-semibold">Subjects (Select up to 2):</label>
+                    {{ form.subject }}
+                </div>
+            
+                <!-- Town -->
+                <div class="mb-4">
+                    <label for="id_town" class="block font-semibold">Town:</label>
+                    {{ form.town }}
+                </div>
+            
+                <!-- District -->
+                <div class="mb-4">
+                    <label for="id_district" class="block font-semibold">District:</label>
+                    {{ form.district }}
+                </div>
+            
+                <!-- Medium -->
+                <div class="mb-4">
+                    <label for="id_medium" class="block font-semibold">Medium:</label>
+                    {{ form.medium }}
+                </div>
+            
+                <!-- Phone Number -->
+                <div class="mb-4">
+                    <label for="id_phone_number" class="block font-semibold">Phone Number:</label>
+                    {{ form.phone_number }}
+                </div>
+            
+                <!-- Password -->
+                <div class="mb-4">
+                    <label for="id_password" class="block font-semibold">Password:</label>
+                    {{ form.password }}
+                </div>
+            
+                <!-- Agree to Terms -->
+                <div class="mb-4">
+                    {{ form.agree_to_terms }}
+                </div>
+            
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                        Register
+                    </button>
+                </div>
             </form>
+            
             
 
             <div class="form-footer">
