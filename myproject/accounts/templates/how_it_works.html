@@ -1,0 +1,171 @@
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - GetYourTutor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #FFDAB9 0%, #FFE5B4 100%);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+            padding-top: 60px;
+            padding-bottom: 50px;
+        }
+
+        .section-3d {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .section-3d:hover {
+            transform: translateY(-10px);
+        }
+
+        .bg-peach-light {
+            background: linear-gradient(135deg, #FFDDC1 0%, #FFC8A2 100%);
+        }
+
+        .menu-icon {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-links.active {
+                display: block;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Section (Reuse from the Home Page) -->
+<header class="flex justify-between items-center bg-white p-4 w-full fixed top-0">
+    <div class="flex items-center justify-between w-full">
+        <!-- Left section: Logo and Site Name -->
+        <div class="flex items-center">
+            <img src="{% static 'images/Getyourtutorlogo.png' %}" alt="GetYourTutor Logo" class="h-10 mr-2">
+            <div class="text-xl font-bold">GetYourTutor</div>
+        </div>
+
+        <!-- Right section: Navigation Links -->
+        <div class="hidden md:flex md:flex-row space-x-4 md:ml-auto">
+            <a href="{% url 'home' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Home</a>
+            <a href="{% url 'login' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Login</a>
+            <a href="{% url 'student_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Register</a>
+            <a href="{% url 'teacher_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Register</a>
+            <a href="{% url 'about_us' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">About Us</a>
+            <a href="{% url 'how_it_works' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">How it works</a>
+        </div>
+
+        <!-- Hamburger Menu Icon for mobile -->
+        <div class="menu-icon text-2xl cursor-pointer md:hidden" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</header>
+
+<main class="flex flex-col items-center justify-center w-full mt-20 px-4 bg-peach-light">
+    <div class="text-center max-w-3xl">
+        <h1 class="text-4xl font-bold text-gray-800 mb-6">How It Works</h1>
+        <p class="text-lg text-gray-700 mb-12">Our simple process ensures that you connect with the best tutors in no time!</p>
+
+        <!-- Section 1: Search for Tutors -->
+        <div class="section-3d">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">1. Search for Tutors</h2>
+            <p class="text-lg text-gray-600 mb-4">After registering as a student, navigate to your personalized dashboard and click on the "Search Teachers" link. You'll be able to search based on <strong>District</strong>, <strong>Teaching Medium</strong> (English, Sinhala, Tamil), and <strong>Subject</strong>.</p>
+            <p class="text-lg text-gray-600">Available teachers, along with their ratings, town, and other details, will be displayed for you to choose from.</p>
+        </div>
+
+        <!-- Section 2: Request and Connect with a Tutor -->
+        <div class="section-3d">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">2. Request and Connect</h2>
+            <p class="text-lg text-gray-600 mb-4">Click "Request a Teacher" once you've found the perfect tutor. Our admin team will contact both the student and teacher to confirm the first class, which is <strong>free of charge</strong>.</p>
+            <p class="text-lg text-gray-600">Once confirmed, the teacher will appear in your dashboard, and you will need to pay a one-time connection fee of <strong>Rs. 2500</strong>. This allows you to start learning with your selected tutor.</p>
+        </div>
+
+        <!-- Section 3: Enjoy Your First Class and Continue Learning -->
+        <div class="section-3d">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">3. Enjoy Learning!</h2>
+            <p class="text-lg text-gray-600 mb-4">The first class is free, and you can decide with your tutor whether future classes will be held <strong>online</strong> or <strong>in person</strong>, based on your convenience.</p>
+            <p class="text-lg text-gray-600">Our tutors are high achievers, many of whom have excelled in their GCE A-Level exams, ensuring you're in great hands.</p>
+        </div>
+
+        <!-- Additional Feature: Forums -->
+        <div class="section-3d">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">4. Get Extra Help with Forums</h2>
+            <p class="text-lg text-gray-600 mb-4">Need help outside of class? Head to our <strong>Forum</strong> where you can ask questions, share resources, and get answers from both teachers and fellow students.</p>
+            <p class="text-lg text-gray-600">Browse by subject to find the help you need anytime.</p>
+        </div>
+
+    </div>
+</main>
+
+<!-- Footer Section -->
+<footer class="footer bg-white text-gray-700 py-4 w-full">
+    <div class="text-center">
+        <div class="footer-logo text-2xl font-bold">GetYourTutor</div>
+        <p class="slogan mt-2">Helping everyone succeed in education.</p>
+
+        <div class="footer-links mt-4">
+            <ul class="flex justify-center space-x-4">
+                <li><a href="{% url 'student_register' %}" class="hover:underline">Student Register</a></li>
+                <li><a href="{% url 'teacher_register' %}" class="hover:underline">Teacher Register</a></li>
+                <li><a href="{% url 'about_us' %}" class="hover:underline">About Us</a></li>
+            </ul>
+        </div>
+
+        <div class="contact-info mt-4">
+            <p>Email: getyourtutor@gmail.com</p>
+            <p>Phone: +94 70 717 0688</p>
+            <p>WhatsApp: <i class="fab fa-whatsapp text-green-500"></i> +94 70 717 0688</p>
+
+            <div class="footer-bottom mt-4 border-t pt-4">
+                <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('active');
+    }
+</script>
+
+</body>
+</html>
