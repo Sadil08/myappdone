@@ -98,6 +98,26 @@
     </div>
 </header>
 
+<!-- Mobile Menu -->
+<div class="nav-links hidden flex-col md:hidden space-y-4 absolute bg-white w-full left-0 top-16">
+    <a href="{% url 'home' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Home</a>
+    <a href="{% url 'login' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Login</a>
+    <a href="{% url 'student_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Register</a>
+    <a href="{% url 'teacher_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Register</a>
+    <a href="{% url 'about_us' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">About Us</a>
+    <a href="{% url 'how_it_works'%}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">How it works</a>
+</div>
+
+
+<script>
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('hidden');
+        navLinks.classList.toggle('flex');
+    }
+</script>
+
+
 <main class="flex flex-col items-center justify-center w-full mt-20 px-4 bg-peach-light">
     <div class="text-center max-w-3xl">
         <h1 class="text-4xl font-bold text-gray-800 mb-6">How It Works</h1>
