@@ -32,7 +32,7 @@ urlpatterns = [
     path('forum/question/<int:question_id>/', views.question_detail, name='question_detail'),
     path('upload-paper/', views.upload_paper, name='upload_paper'),
     path('terms/', views.terms_view, name='terms'),
-
+    path('how-it-works/', views.how_it_works, name='how_it_works'),
     
 ]
 

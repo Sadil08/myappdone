@@ -29,6 +29,10 @@ def about_us(request):
 def terms_view(request):
     return render(request, 'terms.html')
 
+def how_it_works(request):
+    return render(request, 'how_it_works.html')
+
+
 
 
 @login_required

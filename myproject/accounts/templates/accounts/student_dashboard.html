@@ -347,6 +347,13 @@
         <div class="text-center">
             <div class="footer-logo text-xl font-bold">GetYourTutor</div>
             <p class="slogan mt-1">Helping everyone succeed in education.</p>
+            <div class="footer-links mt-4">
+                <ul class="flex justify-center space-x-4">
+                    <li><a href="{% url 'student_dashboard' %}" class="hover:underline">Dashboard</a></li>
+                    <li><a href="{% url 'search_teachers' %}" class="hover:underline">Search Teachers</a></li>
+                    <li><a href="{% url 'terms' %}" class="hover:underline">Terms and Conditions</a></li>
+                </ul>
+            </div>
 
             <div class="contact-info mt-2 text-sm">
                 <p>Email: getyourtutor@gmail.com</p>
