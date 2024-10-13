@@ -38,24 +38,22 @@ class StudentRegisterForm(UserCreationForm):
 
 class TeacherRegistrationForm(forms.ModelForm):
     agree_to_terms = forms.BooleanField(
-    label=mark_safe('I agree to the <a href="/terms/" target="_blank" style="color: blue; text-decoration: underline;">Terms and Conditions</a>'),
-    required=True,
-)
+        label=mark_safe('I agree to the <a href="/terms/" target="_blank" style="color: blue; text-decoration: underline;">Terms and Conditions</a>'),
+        required=True,
+    )
     
-
-        # District is chosen from predefined choices
+    # District is chosen from predefined choices
     district = forms.ChoiceField(
         choices=CustomUser.DISTRICT_CHOICES,
         required=True,
     )
     
-    # Subject is a multiple choice field (Many-to-Many relationship)
+    # Subject is a multiple select dropdown field (Many-to-Many relationship)
     subject = forms.ModelMultipleChoiceField(
         queryset=Subject.objects.all(),  # Assuming Subject is a separate model
-        widget=forms.SelectMultiple(attrs={'size': 10}),  # Use SelectMultiple widget for a dropdown list
+        widget=forms.SelectMultiple(attrs={'size': 4, 'class': 'form-control'}),  # Dropdown with select multiple
         required=True,
     )
-
 
     class Meta:
         model = CustomUser
@@ -63,7 +61,6 @@ class TeacherRegistrationForm(forms.ModelForm):
         widgets = {
             'password': forms.PasswordInput(),
         }
-
 
     def clean_subject(self):
         """Custom validation to ensure only 2 subjects are selected."""
@@ -73,7 +70,6 @@ class TeacherRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("You can select a maximum of 2 subjects.")
 
         return selected_subjects
-
 
     def clean(self):
         cleaned_data = super().clean()
@@ -90,6 +86,7 @@ class TeacherRegistrationForm(forms.ModelForm):
         # Check if terms and conditions are agreed upon
         if not agree_to_terms:
             raise ValidationError('You must agree to the terms and conditions.')
+
 
 class AdminRegisterForm(UserCreationForm):
     class Meta:
