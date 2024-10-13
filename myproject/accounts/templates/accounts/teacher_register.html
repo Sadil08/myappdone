@@ -184,11 +184,24 @@
             <h2 class="form-title">Teacher Registration</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form.non_field_errors }}
+                
+                <div class="mb-4">
+                    <label for="id_subject" class="block text-sm font-medium text-gray-700">Subjects</label>
+                    <select multiple id="id_subject" name="subject" class="form-control">
+                        {% for subject in form.subject %}
+                            <option value="{{ subject.data.value }}">{{ subject.data.label }}</option>
+                        {% endfor %}
+                    </select>
+                    {{ form.subject.errors }}
+                </div>
+            
+                <!-- Render other form fields -->
                 <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
                     Register
                 </button>
             </form>
+            
 
             <div class="form-footer">
                 Already have an account? <a href="{% url 'login' %}" class="text-blue-500">Login here</a>.
