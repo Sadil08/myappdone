@@ -4,7 +4,7 @@ from .models import CustomUser, Subject
 
 class CustomUserAdmin(UserAdmin):
     # Display these fields in the list view
-    list_display = ('username', 'full_name', 'user_type', 'email', 'phone_number', 'district')
+    list_display = ('username', 'full_name', 'user_type', 'email', 'phone_number', 'district','nic_photo', 'alevel_result_sheet', 'subject')
 
     # Add filters for user type (student, teacher, admin) and district
     list_filter = ('user_type', 'district', 'medium')
