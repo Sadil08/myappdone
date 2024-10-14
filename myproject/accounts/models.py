@@ -42,7 +42,7 @@ class CustomUser(AbstractUser):
         ('science', 'OL- Science'),
         # Add more subjects as needed
     )
-    subject = models.ManyToManyField('Subject', blank=False)  # ManyToManyField to allow multiple subject selections
+    subject = models.ManyToManyField('Subject',  related_name='teachers', blank=False)  # ManyToManyField to allow multiple subject selections
    
     nic_photo = models.ImageField(upload_to=user_directory_path)  # For teachers
     alevel_result_sheet = models.ImageField(upload_to=user_directory_path)  # For teachers

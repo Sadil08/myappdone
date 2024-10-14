@@ -69,6 +69,7 @@ def teacher_register(request):
             user.is_active = False  # Make the user inactive until admin approves
             user.set_password(form.cleaned_data['password'])  # Hash the password
             user.save()
+            form.save_m2m()  # Save the ManyToMany relationship
             messages.success(request, 'Your account has been created! Wait for admin approval.')
             return redirect('login')  # Redirect to login after registration
     else:
