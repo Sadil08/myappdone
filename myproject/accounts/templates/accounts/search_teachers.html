@@ -127,7 +127,12 @@
         <form method="GET" action="{% url 'search_teachers' %}" class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4" onsubmit="return validateSearchForm()">
             <div class="flex flex-col w-1/3">
                 <label for="district" class="block font-medium text-gray-700">District:</label>
-                <input type="text" name="district" id="district" class="mt-1 block w-full border-2 border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2">
+                <select name="district" id="district" class="mt-1 block w-full border-2 border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2">
+                    <option value="">Select District</option>
+                    <option value="Colombo">Colombo</option>
+                    <option value="Gampaha">Gampaha</option>
+                    
+                </select>
             </div>
             
             <div class="flex flex-col w-1/3">

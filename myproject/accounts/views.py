@@ -14,6 +14,9 @@ from django.db.models import Avg
 from .models import Subject, Question, Answer
 from .forms import QuestionForm, AnswerForm
 from .forms import PaperUploadForm
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Ensure only admins can approve teachers
 def is_admin(user):
@@ -228,21 +231,27 @@ def admin_dashboard(request):
 # views.py
 @login_required
 def search_teachers(request):
+            # Initialize a query for active teachers
+    teachers = CustomUser.objects.filter(user_type='teacher', is_active=True)
+
     if request.method == 'GET':
         district = request.GET.get('district')
         medium = request.GET.get('medium')
         subject = request.GET.getlist('subject')  # Get a list of selected subjects
         
-        # Initialize a query for active teachers
-        teachers = CustomUser.objects.filter(user_type='teacher', is_active=True)
+
+                # Log the filter values
+        logger.debug(f"District: {district}, Medium: {medium}, Subjects: {subject}")
+
         
         # Apply filters only if the fields are provided in the request
-        if district:
-            teachers = teachers.filter(district=district)
-        if medium:
-            teachers = teachers.filter(medium=medium)
-        if subject:
-            teachers = teachers.filter(subject__in=subject)
+        if district or medium or subject:
+            if district:
+                teachers = teachers.filter(district=district)
+            if medium:
+                teachers = teachers.filter(medium=medium)
+            if subject:
+                teachers = teachers.filter(subject__in=subject)
         
         teachers = teachers.annotate(avg_rating=Avg('reviews__rating'))
 
