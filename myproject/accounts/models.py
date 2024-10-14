@@ -146,11 +146,7 @@ def get_default_user():
 
 User = get_user_model()
 
-class Subject(models.Model):
-    name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.name
 
 class Question(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
