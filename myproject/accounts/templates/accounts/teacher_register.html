@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Registration</title>
+    <title>Teacher Registration</title>
     
     <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -276,7 +276,7 @@
                 <!-- Agree to Terms -->
                 <div class="mb-4">
                     <label for="id_agree_to_terms" class="inline-block">
-                        {{ form.agree_to_terms }} I agree to the <a href="#" class="text-blue-500">terms and conditions</a>
+                        {{ form.agree_to_terms }} I agree to the <a href="{% url 'terms' %}" class="text-blue-500">terms and conditions</a>
                     </label>
                 </div>
             

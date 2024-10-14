@@ -230,16 +230,31 @@ def search_teachers(request):
     if request.method == 'GET':
         district = request.GET.get('district')
         medium = request.GET.get('medium')
-        subject = request.GET.get('subject')
+        subject = request.GET.getlist('subject')  # Get a list of selected subjects
         
-        # Filter based on search criteria and annotate with average rating
-        teachers = CustomUser.objects.filter(user_type='teacher', district=district, medium=medium, subject=subject, is_active=True).annotate(avg_rating=Avg('reviews__rating'))
+        # Initialize a query for active teachers
+        teachers = CustomUser.objects.filter(user_type='teacher', is_active=True)
         
+        # Apply filters only if the fields are provided in the request
+        if district:
+            teachers = teachers.filter(district=district)
+        if medium:
+            teachers = teachers.filter(medium=medium)
+        if subject:
+            teachers = teachers.filter(subject__in=subject)  # Adjusted for ManyToManyField
+        
+        # Annotate teachers with their average rating
+        teachers = teachers.annotate(avg_rating=Avg('reviews__rating'))
+        
+        # Get all subjects for the subject dropdown in the template
+        subjects = Subject.objects.all()
+
         context = {
-            'teachers': teachers
+            'teachers': teachers,
+            'subjects': subjects,  # Pass subjects for the dropdown
         }
         return render(request, 'accounts/search_teachers.html', context)
-
+    
 
 @login_required
 def request_teacher(request, teacher_id):
