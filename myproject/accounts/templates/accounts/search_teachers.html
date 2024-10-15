@@ -10,14 +10,49 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom background gradient animation */
+        /* Custom background gradient animation */
         body {
-            background: linear-gradient(135deg, #293647, #403060);
-            background-size: 400% 400%;
-            animation: gradientMove 8s ease infinite;
+            background-image: url("{% static 'images/moon2.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: gradientMove 15s ease infinite;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            max-height: 200vh;
+            color: black;
+            z-index: -1; /* Ensure clouds are behind other elements */
+            
         }
+
+        /* Animation keyframes */
+        @keyframes moveClouds {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 100% 0; /* Move clouds to the right */
+            }
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        
+
+        img {
+            width: 100%;               /* Ensures the image is responsive */
+            max-width: 300px;           /* Maximum size for larger screens */
+            height: auto;               /* Keep aspect ratio */
+            object-fit: cover;          /* Ensures the image doesn't stretch */
+            
+            /* Add your animation styles */
+            animation: fadeIn 1.5s ease-in-out;
+          }
 
         /* Custom hover underline animation */
         .hover-underline-animation {

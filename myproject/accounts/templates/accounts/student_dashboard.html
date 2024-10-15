@@ -11,19 +11,47 @@
     <style>
         /* Custom background gradient animation */
         body {
-            background: linear-gradient(135deg, #293647, #403060);
-            background-size: 400% 400%;
-            animation: gradientMove 8s ease infinite;
+            background-image: url("{% static 'images/moon2.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: gradientMove 15s ease infinite;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            max-height: 200vh;
+            color: black;
+            z-index: -1; /* Ensure clouds are behind other elements */
+            
         }
 
+        /* Animation keyframes */
+        @keyframes moveClouds {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 100% 0; /* Move clouds to the right */
+            }
+        }
+        
         @keyframes gradientMove {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+        
+        
+
+        img {
+            width: 100%;               /* Ensures the image is responsive */
+            max-width: 300px;           /* Maximum size for larger screens */
+            height: auto;               /* Keep aspect ratio */
+            object-fit: cover;          /* Ensures the image doesn't stretch */
+            
+            /* Add your animation styles */
+            animation: fadeIn 1.5s ease-in-out;
+          }
 
         /* Custom hover underline animation */
         .hover-underline-animation {
@@ -162,10 +190,12 @@
 .right-sidebar h3 {
     font-size: 1.2em;
     margin-bottom: 10px;
+    color: black;
 }
 
 .right-sidebar p {
     font-size: 0.9em;
+    color: black;
 }
 
 .right-sidebar .btn {
@@ -207,7 +237,8 @@
                 <a href="#" class="hover-underline-animation">Forum</a>
                 
                 <!-- Dropdown Menu -->
-                <ul class="absolute hidden group-hover:block bg-black shadow-lg p-4 rounded-lg">
+                <!-- Dropdown Menu -->
+                <ul class="absolute hidden group-hover:block bg-black shadow-lg p-4 rounded-lg max-h-80 w-64 overflow-auto">
                     {% for subject in subjects %}
                         <li>
                             <a href="{% url 'forum_by_subject' subject.id %}" class="block px-4 py-2 hover:bg-gray-700">{{ subject.name }}</a>
@@ -216,6 +247,7 @@
                         <li>No subjects available</li>
                     {% endfor %}
                 </ul>
+
             </li>
         </ul>
     <a href="{% url 'logout' %}" class="hover-underline-animation">Logout</a>
@@ -247,7 +279,7 @@
                                     <a href="#" class="block py-2 px-4 hover:bg-gray-700">Forum</a>
                                     
                                     <!-- Dropdown Menu -->
-                                    <ul class="absolute hidden group-hover:block bg-black shadow-lg p-4 rounded-lg">
+                                    <ul class="absolute hidden group-hover:block bg-black shadow-lg p-4 rounded-lg max-h-80 overflow-auto">
                                         {% for subject in subjects %}
                                             <li>
                                                 <a href="{% url 'forum_by_subject' subject.id %}" class="block py-2 px-4 hover:bg-gray-700">{{ subject.name }}</a>
