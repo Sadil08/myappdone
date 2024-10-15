@@ -72,6 +72,8 @@ class CustomUser(AbstractUser):
         ('tamil', 'Tamil Medium'),
     )
     medium = models.CharField(max_length=20, choices=MEDIUM_CHOICES)  # Teaching Medium
+    description = models.CharField(max_length=120, null = True, blank = True)  # Optional field for teacher description
+
 
 class Subject(models.Model):
     name = models.CharField(max_length=100)

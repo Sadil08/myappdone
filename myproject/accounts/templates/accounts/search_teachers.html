@@ -175,6 +175,7 @@
                     <p class="text-gray-700">Town: {{ teacher.town }}</p>
                     <p class="text-gray-700">Medium: {{ teacher.get_medium_display }}</p>
                     <p class="text-gray-700">Average Rating: {{ teacher.avg_rating|default_if_none:"No ratings yet" }} / 5</p>
+                    <p class="text-gray-700">Description: {{ teacher.description }}</p>
                     
                     <form method="post" action="{% url 'request_teacher' teacher.id %}">
                         {% csrf_token %}

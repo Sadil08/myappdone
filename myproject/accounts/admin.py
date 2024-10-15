@@ -5,13 +5,14 @@ from .models import CustomUser, Subject
 
 class CustomUserAdmin(UserAdmin):
     # Display these fields in the list view
-    list_display = ('username', 'full_name', 'user_type', 'email', 'phone_number', 'district', 'nic_photo_thumbnail', 'alevel_result_sheet_thumbnail', 'display_subjects')
+    list_display = ('username', 'full_name', 'user_type', 'email', 'phone_number', 'district', 'nic_photo_thumbnail', 'alevel_result_sheet_thumbnail', 'display_subjects', 'description')
 
     # Add filters for user type (student, teacher, admin) and district
     list_filter = ('user_type', 'district', 'medium')
 
     # Add fields that are editable directly in the list view
-    list_editable = ('user_type',)
+    list_editable = ('user_type', 'description',  'district','phone_number')
+
 
     # Fields to search by in the admin panel
     search_fields = ('username', 'full_name', 'email', 'phone_number')
@@ -20,7 +21,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password', 'user_type')}),
         ('Personal Info', {'fields': ('full_name', 'age', 'phone_number', 'email', 'town', 'district', 'medium')}),
-        ('Teacher Info', {'fields': ('nic_photo', 'alevel_result_sheet', 'subject')}),
+        ('Teacher Info', {'fields': ('nic_photo', 'alevel_result_sheet', 'subject', 'description')}),
         ('Student Info', {'fields': ('alevel_batch_year',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
     )

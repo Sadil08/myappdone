@@ -57,7 +57,7 @@ class TeacherRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['full_name', 'username', 'email', 'age', 'nic_photo', 'alevel_result_sheet', 'subject', 'town', 'district', 'medium','phone_number', 'password']
+        fields = ['full_name', 'username', 'email', 'age', 'nic_photo', 'alevel_result_sheet', 'subject', 'town', 'district', 'medium','phone_number','description', 'password']
         widgets = {
             'password': forms.PasswordInput(),
         }

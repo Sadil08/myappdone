@@ -23,7 +23,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['myappdone.onrender.com']  # Replace 'your-app-name' with the actual name of your Render app
+ALLOWED_HOSTS = ['myappdone.onrender.com', '127.0.0.1']  # Replace 'your-app-name' with the actual name of your Render app
 
 # Media settings
 MEDIA_URL = '/media/'
