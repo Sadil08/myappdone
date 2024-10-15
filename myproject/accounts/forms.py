@@ -159,6 +159,18 @@ class AnswerForm(forms.ModelForm):
         model = Answer
         fields = ['text', 'image']
 
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # Get the question instance from the form's instance (passed in view)
+        question = self.instance.question
+
+        # Check if the question already has 5 answers
+        if question and Answer.objects.filter(question=question).count() > 5:
+            raise forms.ValidationError("This question already has the maximum number of answers (5).")
+
+        return cleaned_data
+
 
 
 

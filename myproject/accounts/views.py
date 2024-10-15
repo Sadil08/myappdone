@@ -388,22 +388,24 @@ def forum_by_subject(request, subject_id):
 def question_detail(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     answers = Answer.objects.filter(question=question)
+
     if request.method == 'POST':
         form = AnswerForm(request.POST, request.FILES)
+        form.instance.question = question  # Ensure question is assigned to the form instance
+
         if form.is_valid():
             answer = form.save(commit=False)
             answer.author = request.user
-            answer.question = question
-            answer.save()
+            answer.save()  # Save the answer to the database
             return redirect('question_detail', question_id=question.id)
     else:
         form = AnswerForm()
+
     return render(request, 'accounts/question_detail.html', {
         'question': question,
         'answers': answers,
         'form': form,
     })
-
 
 
 

@@ -166,10 +166,6 @@ class Answer(models.Model):
     text = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to='answers/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def clean(self):
-        if self.question.answer_set.count() >= 5 and not self.pk:
-            raise ValidationError("This question already has 5 answers.")
         
 
     def __str__(self):
@@ -179,9 +175,16 @@ class Answer(models.Model):
 
 class PaperUpload(models.Model):
     SUBJECT_CHOICES = [
-        ('math', 'Mathematics'),
-        ('science', 'Science'),
+        ('physics','Physics'),
+        ('cmath', 'Combined Maths'),
+        ('chemistry','Chemistry'),
+        ('biology','Biology'),
+        ('accounting','Accounting'),
+        ('ict','ICT'),
+        ('science', 'O/L-Science'),
+        ('olmaths', 'O/L-Maths'),
         ('english', 'English'),
+        
         # Add other subjects
     ]
 

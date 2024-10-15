@@ -2,6 +2,22 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
 from .models import CustomUser, Subject
+from .models import Question, Answer
+
+class AnswerInline(admin.TabularInline):  # You can use StackedInline for a different layout
+    model = Answer
+    extra = 1  # Number of empty forms displayed when adding a new Answer
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('text', 'author', 'created_at')  # Customize how questions are listed
+    search_fields = ('text', 'author__username')     # Add search functionality
+    inlines = [AnswerInline]  # Inline answers within the Question admin page
+
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    list_display = ('text', 'author', 'question', 'created_at')  # Customize how answers are listed
+    search_fields = ('text', 'author__username', 'question__text')  # Add search functionality
 
 class CustomUserAdmin(UserAdmin):
     # Display these fields in the list view
