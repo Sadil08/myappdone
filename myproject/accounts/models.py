@@ -167,6 +167,11 @@ class Answer(models.Model):
     image = models.ImageField(upload_to='answers/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def clean(self):
+        if self.question.answer_set.count() >= 5 and not self.pk:
+            raise ValidationError("This question already has 5 answers.")
+        
+
     def __str__(self):
         return f"Answer by {self.author} to Question {self.question.id}"
 
