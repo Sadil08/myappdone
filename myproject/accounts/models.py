@@ -3,7 +3,9 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth import get_user_model
-
+from cloudinary.models import CloudinaryField
+from cloudinary.models import CloudinaryField
+import cloudinary
 
 
 
@@ -44,8 +46,8 @@ class CustomUser(AbstractUser):
     )
     subject = models.ManyToManyField('Subject',  related_name='teachers', blank=False)  # ManyToManyField to allow multiple subject selections
    
-    nic_photo = models.ImageField(upload_to=user_directory_path)  # For teachers
-    alevel_result_sheet = models.ImageField(upload_to=user_directory_path)  # For teachers
+    nic_photo = CloudinaryField('nic_photo', folder='teachers')
+    alevel_result_sheet = CloudinaryField('alevel_result_sheet', folder='teachers')
 
         # Add these fields for teachers
     full_name = models.CharField(max_length=100)
@@ -73,6 +75,24 @@ class CustomUser(AbstractUser):
     )
     medium = models.CharField(max_length=20, choices=MEDIUM_CHOICES)  # Teaching Medium
     description = models.CharField(max_length=120, null = True, blank = True)  # Optional field for teacher description
+        
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)  # Save first to ensure we have a username
+
+        if is_new:  # Only for new instances
+            # Update the Cloudinary resources with the correct folder
+            if self.nic_photo:
+                new_public_id = f'teachers/{self.username}/{self.nic_photo.public_id.split("/")[-1]}'
+                cloudinary.uploader.rename(self.nic_photo.public_id, new_public_id)
+                self.nic_photo = new_public_id
+            if self.alevel_result_sheet:
+                new_public_id = f'teachers/{self.username}/{self.alevel_result_sheet.public_id.split("/")[-1]}'
+                cloudinary.uploader.rename(self.alevel_result_sheet.public_id, new_public_id)
+                self.alevel_result_sheet = new_public_id
+            
+            # Save again to update the model with new Cloudinary URLs
+            super().save(update_fields=['nic_photo', 'alevel_result_sheet'])
 
 
 class Subject(models.Model):

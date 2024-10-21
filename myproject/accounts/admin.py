@@ -4,36 +4,27 @@ from django.utils.html import format_html
 from .models import CustomUser, Subject
 from .models import Question, Answer
 
-class AnswerInline(admin.TabularInline):  # You can use StackedInline for a different layout
+class AnswerInline(admin.TabularInline):
     model = Answer
-    extra = 1  # Number of empty forms displayed when adding a new Answer
+    extra = 1
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('text', 'author', 'created_at')  # Customize how questions are listed
-    search_fields = ('text', 'author__username')     # Add search functionality
-    inlines = [AnswerInline]  # Inline answers within the Question admin page
+    list_display = ('text', 'author', 'created_at')
+    search_fields = ('text', 'author__username')
+    inlines = [AnswerInline]
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('text', 'author', 'question', 'created_at')  # Customize how answers are listed
-    search_fields = ('text', 'author__username', 'question__text')  # Add search functionality
+    list_display = ('text', 'author', 'question', 'created_at')
+    search_fields = ('text', 'author__username', 'question__text')
 
 class CustomUserAdmin(UserAdmin):
-    # Display these fields in the list view
-    list_display = ('username', 'full_name', 'user_type', 'email', 'phone_number', 'district', 'nic_photo_thumbnail', 'alevel_result_sheet_thumbnail', 'display_subjects', 'description')
-
-    # Add filters for user type (student, teacher, admin) and district
+    list_display = ('username', 'full_name', 'user_type', 'email', 'phone_number', 'district', 'nic_photo_link', 'alevel_result_sheet_link', 'display_subjects', 'description')
     list_filter = ('user_type', 'district', 'medium')
-
-    # Add fields that are editable directly in the list view
-    list_editable = ('user_type', 'description',  'district','phone_number')
-
-
-    # Fields to search by in the admin panel
+    list_editable = ('user_type', 'description', 'district', 'phone_number')
     search_fields = ('username', 'full_name', 'email', 'phone_number')
 
-    # Organize fieldsets in the detail view of the admin panel
     fieldsets = (
         (None, {'fields': ('username', 'password', 'user_type')}),
         ('Personal Info', {'fields': ('full_name', 'age', 'phone_number', 'email', 'town', 'district', 'medium')}),
@@ -42,7 +33,6 @@ class CustomUserAdmin(UserAdmin):
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
     )
 
-    # Configure the 'Add user' form fields
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -50,27 +40,22 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
-    # Custom method to display nic_photo as a thumbnail in the admin list view
-    def nic_photo_thumbnail(self, obj):
+    def nic_photo_link(self, obj):
         if obj.nic_photo:
-            return format_html('<img src="{}" style="width: 50px; height: 50px;" />', obj.nic_photo.url)
+            return format_html('<a href="{}" target="_blank">View NIC Photo</a>', obj.nic_photo.url)
         return "No photo"
-    nic_photo_thumbnail.short_description = 'NIC Photo'
+    nic_photo_link.short_description = 'NIC Photo'
 
-    # Custom method to display alevel_result_sheet as a thumbnail in the admin list view
-    def alevel_result_sheet_thumbnail(self, obj):
+    def alevel_result_sheet_link(self, obj):
         if obj.alevel_result_sheet:
-            return format_html('<img src="{}" style="width: 50px; height: 50px;" />', obj.alevel_result_sheet.url)
+            return format_html('<a href="{}" target="_blank">View A-Level Result Sheet</a>', obj.alevel_result_sheet.url)
         return "No sheet"
-    alevel_result_sheet_thumbnail.short_description = 'A-Level Result Sheet'
+    alevel_result_sheet_link.short_description = 'A-Level Result Sheet'
 
-    # Custom method to display subjects as a comma-separated string
     def display_subjects(self, obj):
         return ", ".join([subject.name for subject in obj.subject.all()])
     display_subjects.short_description = 'Subjects'
 
-# Register the custom admin for the CustomUser model
 admin.site.register(CustomUser, CustomUserAdmin)
-
-# Register the Subject model if needed
 admin.site.register(Subject)
+

@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'False'
 
 ALLOWED_HOSTS = ['myappdone.onrender.com', '127.0.0.1']  # Replace 'your-app-name' with the actual name of your Render app
 
@@ -115,6 +118,10 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
+print("Cloudinary Cloud Name:", os.environ.get('CLOUDINARY_CLOUD_NAME'))
+print("Cloudinary API Key:", os.environ.get('CLOUDINARY_API_KEY'))
+print("Cloudinary API Secret:", os.environ.get('CLOUDINARY_API_SECRET'))
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MEDIA_URL = '/media/'  # Cloudinary will now handle your media files
@@ -126,6 +133,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Ensure this directory exists
 ]
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

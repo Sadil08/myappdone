@@ -15,6 +15,7 @@ from .models import Subject, Question, Answer
 from .forms import QuestionForm, AnswerForm
 from .forms import PaperUploadForm
 import logging
+from django.db import transaction
 
 logger = logging.getLogger(__name__)
 
@@ -63,18 +64,30 @@ def student_register(request):
         form = StudentRegisterForm()
     return render(request, 'accounts/student_register.html', {'form': form})
 
+@transaction.atomic
 def teacher_register(request):
     if request.method == 'POST':
         form = TeacherRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.user_type = 'teacher'  # Mark the user as a teacher
-            user.is_active = False  # Make the user inactive until admin approves
-            user.set_password(form.cleaned_data['password'])  # Hash the password
-            user.save()
-            form.save_m2m()  # Save the ManyToMany relationship
-            messages.success(request, 'Your account has been created! Wait for admin approval.')
-            return redirect('login')  # Redirect to login after registration
+            try:
+                with transaction.atomic():
+                    user = form.save(commit=False)
+                    user.user_type = 'teacher'
+                    user.is_active = False
+                    user.set_password(form.cleaned_data['password'])
+                    
+                    # Handle file uploads
+                    if 'nic_photo' in request.FILES:
+                        user.nic_photo = request.FILES['nic_photo']
+                    if 'alevel_result_sheet' in request.FILES:
+                        user.alevel_result_sheet = request.FILES['alevel_result_sheet']
+                    
+                    user.save()
+                    form.save_m2m()
+                messages.success(request, 'Your account has been created! Wait for admin approval.')
+                return redirect('login')
+            except Exception as e:
+                messages.error(request, f'An error occurred: {str(e)}')
     else:
         form = TeacherRegistrationForm()
     return render(request, 'accounts/teacher_register.html', {'form': form})
