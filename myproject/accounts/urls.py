@@ -5,6 +5,7 @@ from .views import search_teachers
 from .views import request_teacher, admin_teacher_requests, approve_teacher_request
 from .views import confirm_time, decline_time, delete_teacher
 from .views import forum_subjects, forum_by_subject, question_detail, upload_paper
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('register/student/', views.student_register, name='student_register'),
@@ -33,6 +34,10 @@ urlpatterns = [
     path('upload-paper/', views.upload_paper, name='upload_paper'),
     path('terms/', views.terms_view, name='terms'),
     path('how-it-works/', views.how_it_works, name='how_it_works'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     
 ]
 

@@ -38,11 +38,7 @@
             margin-bottom: 15px;
         }
 
-        .question-list li::before {
-            counter-increment: question-counter;
-            content: counter(question-counter) ". ";
-            font-weight: bold;
-        }
+   
 
         /* Make the form and question sections wider */
         .content-container {
@@ -71,6 +67,22 @@
                 padding: 10px;
                 border-bottom: 1px solid #ddd;
             }
+        }
+
+        .question-list ol {
+            list-style-type: none;
+            counter-reset: question-counter;
+        }
+        
+        .question-list ol li {
+            counter-increment: question-counter;
+        }
+        
+        .question-list ol li::before {
+            content: counter(question-counter) ". ";
+            color: #3B82F6; /* blue-500 */
+            font-weight: bold;
+            margin-right: 0.5em;
         }
     </style>
 </head>
@@ -136,7 +148,7 @@
         <section class="bg-white shadow-lg p-6 rounded-lg w-full">
             <h2 class="text-2xl font-semibold mb-4">Questions</h2>
             <div class="question-list overflow-y-auto max-h-[500px]">
-                <ul class="space-y-4">
+                <ol class="space-y-4 ">
                     {% for question in questions %}
                         <li class="border-b py-2">
                             <a href="{% url 'question_detail' question.id %}" class="text-blue-600 hover:underline">{{ question.text }}</a> by {{ question.author }}
@@ -144,7 +156,7 @@
                     {% empty %}
                         <li class="text-gray-500">No questions yet. Be the first to ask a question!</li>
                     {% endfor %}
-                </ul>
+                </ol>
             </div>
         </section>
     </div>

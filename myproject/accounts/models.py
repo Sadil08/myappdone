@@ -174,7 +174,7 @@ class Question(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=get_default_user)
     text = models.TextField(null=True, blank=True)
-    image = models.ImageField(upload_to='questions/', null=True, blank=True)
+    image = CloudinaryField('image', folder='questions', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -184,7 +184,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=get_default_user)
     text = models.TextField(null=True, blank=True)
-    image = models.ImageField(upload_to='answers/', null=True, blank=True)
+    image = CloudinaryField('image', folder='answers', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
         
 

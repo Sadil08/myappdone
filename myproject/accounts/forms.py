@@ -8,6 +8,7 @@ from .models import PaperUpload
 from .models import Subject
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from cloudinary.forms import CloudinaryFileField
 
 
 
@@ -150,24 +151,39 @@ class ReviewForm(forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
+    image = CloudinaryFileField(
+        options={
+            'folder': 'questions',
+            'allow_empty': True,
+        },
+        required=False
+    )
+
     class Meta:
         model = Question
         fields = ['subject', 'text', 'image']
 
 class AnswerForm(forms.ModelForm):
+    image = CloudinaryFileField(
+        options={
+            'folder': 'answers',
+            'allow_empty': True,
+        },
+        required=False
+    )
+
     class Meta:
         model = Answer
         fields = ['text', 'image']
 
     def clean(self):
         cleaned_data = super().clean()
-
-        # Get the question instance from the form's instance (passed in view)
-        question = self.instance.question
-
-        # Check if the question already has 5 answers
-        if question and Answer.objects.filter(question=question).count() > 5:
-            raise forms.ValidationError("This question already has the maximum number of answers (5).")
+        
+        # Only check for existing answers if we have a question
+        if hasattr(self.instance, 'question') and self.instance.question:
+            question = self.instance.question
+            if Answer.objects.filter(question=question).count() >= 5:
+                raise forms.ValidationError("This question already has the maximum number of answers (5).")
 
         return cleaned_data
 

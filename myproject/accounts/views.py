@@ -55,11 +55,15 @@ def student_register(request):
     if request.method == 'POST':
         form = StudentRegisterForm(request.POST)
         if form.is_valid():
-            student = form.save(commit=False)
-            student.user_type = 'student'
-            student.save()
-            login(request, student, backend = 'django.contrib.auth.backends.ModelBackend')  # Specify the backend)
-            return redirect('student_dashboard')
+            username = form.cleaned_data.get('username')
+            if CustomUser.objects.filter(username=username).exists():
+                messages.error(request, 'Username already taken. Please choose a different one.')
+            else:
+                student = form.save(commit=False)
+                student.user_type = 'student'
+                student.save()
+                login(request, student, backend='django.contrib.auth.backends.ModelBackend')
+                return redirect('student_dashboard')
     else:
         form = StudentRegisterForm()
     return render(request, 'accounts/student_register.html', {'form': form})
@@ -387,6 +391,10 @@ def forum_by_subject(request, subject_id):
         if form.is_valid():
             question = form.save(commit=False)
             question.author = request.user
+            question.subject = subject
+            # Remove this block to prevent double saving
+            # if 'image' in request.FILES:
+            #     question.image = request.FILES['image']
             question.save()
             return redirect('forum_by_subject', subject_id=subject.id)
     else:
@@ -403,13 +411,22 @@ def question_detail(request, question_id):
     answers = Answer.objects.filter(question=question)
 
     if request.method == 'POST':
-        form = AnswerForm(request.POST, request.FILES)
-        form.instance.question = question  # Ensure question is assigned to the form instance
+        # Check if the question already has 5 or more answers
+        if answers.count() >= 5:
+            messages.error(request, "This question already has the maximum number of answers (5).")
+            return redirect('question_detail', question_id=question.id)
 
+    if request.method == 'POST':
+        form = AnswerForm(request.POST, request.FILES)
         if form.is_valid():
             answer = form.save(commit=False)
             answer.author = request.user
-            answer.save()  # Save the answer to the database
+            answer.question = question
+            # Remove this block to prevent double saving
+            # if 'image' in request.FILES:
+            #     answer.image = request.FILES['image']
+            answer.save()
+            messages.success(request, "Your answer has been added successfully.")
             return redirect('question_detail', question_id=question.id)
     else:
         form = AnswerForm()
@@ -419,7 +436,6 @@ def question_detail(request, question_id):
         'answers': answers,
         'form': form,
     })
-
 
 
 
