@@ -193,19 +193,54 @@ class AnswerForm(forms.ModelForm):
 
 
 
+
+
 class PaperUploadForm(forms.ModelForm):
+    paper = CloudinaryFileField(
+        options={
+            'resource_type': 'raw',
+            'folder': 'papers',
+            'allowed_formats': ['pdf'],
+        },
+        label='Upload Paper (PDF only)'
+    )
+    
+    marking_scheme = CloudinaryFileField(
+        options={
+            'resource_type': 'raw',
+            'folder': 'marking_schemes',
+            'allowed_formats': ['pdf'],
+        },
+        label='Upload Marking Scheme (PDF only)',
+        required=False
+    )
+
     class Meta:
         model = PaperUpload
         fields = ['subject', 'medium', 'type', 'paper', 'marking_scheme']
         labels = {
             'subject': 'Select Subject',
             'medium': 'Select Medium',
-            'type':' Select Type',
-            'paper': 'Upload Paper (PDF)',
-            'marking_scheme': 'Upload Marking Scheme (PDF, optional)'
+            'type': 'Select Type'
         }
         widgets = {
             'subject': forms.Select(choices=PaperUpload.SUBJECT_CHOICES),
             'medium': forms.Select(choices=PaperUpload.MEDIUM_CHOICES),
             'type': forms.Select(choices=PaperUpload.TYPE_CHOICES),
         }
+
+    def clean_paper(self):
+        paper = self.cleaned_data.get('paper')
+        if paper:
+            # Check if the file is actually uploaded
+            if hasattr(paper, 'content_type') and 'pdf' not in paper.content_type.lower():
+                raise forms.ValidationError('Only PDF files are allowed.')
+        return paper
+
+    def clean_marking_scheme(self):
+        marking_scheme = self.cleaned_data.get('marking_scheme')
+        if marking_scheme:
+            # Check if the file is actually uploaded
+            if hasattr(marking_scheme, 'content_type') and 'pdf' not in marking_scheme.content_type.lower():
+                raise forms.ValidationError('Only PDF files are allowed.')
+        return marking_scheme

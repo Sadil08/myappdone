@@ -445,11 +445,31 @@ def upload_paper(request):
     if request.method == 'POST':
         form = PaperUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            paper_upload = form.save(commit=False)
-            paper_upload.student = request.user  # Assign the logged-in student
-            paper_upload.save()
-            return redirect('student_dashboard')  # Redirect to the student's dashboard
+            try:
+                # Create paper upload instance but don't save yet
+                paper_upload = form.save(commit=False)
+                # Set the student to current user
+                paper_upload.student = request.user
+                
+                # Save the form to store the files in Cloudinary and create the database record
+                paper_upload.save()
+                
+                messages.success(request, 'Paper uploaded successfully!')
+                return redirect('student_dashboard')
+            
+            except Exception as e:
+                logger.error(f"Error uploading paper: {str(e)}")
+                messages.error(request, 'An error occurred while uploading the paper. Please try again.')
+        else:
+            # Log form errors for debugging
+            logger.error(f"Form errors: {form.errors}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
         form = PaperUploadForm()
-    
-    return render(request, 'upload_paper.html', {'form': form})
+
+    return render(request, 'upload_paper.html', {
+        'form': form,
+        'title': 'Upload Paper'
+    })

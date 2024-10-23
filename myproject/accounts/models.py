@@ -224,9 +224,21 @@ class PaperUpload(models.Model):
     subject = models.CharField(max_length=100, choices=SUBJECT_CHOICES)
     medium = models.CharField(max_length=100, choices=MEDIUM_CHOICES)
     type =  models.CharField(max_length=50, choices=TYPE_CHOICES, default='model')
-    paper = models.FileField(upload_to='papers/', null=True, blank=False)
-    marking_scheme = models.FileField(upload_to='marking_schemes/', null=True, blank=True)
+    # Replace FileField with CloudinaryField
+    paper = CloudinaryField('paper', 
+                          resource_type='raw',
+                          folder='papers',
+                          allowed_formats=['pdf'],
+                          null = True,
+                          blank=  True)
+
+    marking_scheme = CloudinaryField('marking_scheme', 
+                                   resource_type='raw',
+                                   folder='marking_schemes',
+                                   allowed_formats=['pdf'],
+                                   null=True,
+                                   blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.student}'s {self.subject} paper in {self.medium}  ({self.get_type_display()})"
+        return f"{self.student}'s {self.subject} paper in {self.medium} ({self.get_type_display()})"
