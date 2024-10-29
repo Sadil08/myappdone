@@ -62,6 +62,7 @@ class CustomUser(AbstractUser):
         ('kaluthara','Kaluthara'),
         ('kurunegala','Kurunegala'),
         ('matale','Matale'),
+        ('rathnapura','Rathnapura'),
 
         # Add other districts as needed
     )

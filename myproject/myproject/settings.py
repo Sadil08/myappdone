@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'False'
 
-ALLOWED_HOSTS = ['myappdone.onrender.com', '127.0.0.1']  # Replace 'your-app-name' with the actual name of your Render app
+ALLOWED_HOSTS = ['getyourtutorsl.com', 'www.getyourtutorsl.com','myappdone.onrender.com', '127.0.0.1']  # Replace 'your-app-name' with the actual name of your Render app
 
 
 
@@ -118,9 +118,6 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-print("Cloudinary Cloud Name:", os.environ.get('CLOUDINARY_CLOUD_NAME'))
-print("Cloudinary API Key:", os.environ.get('CLOUDINARY_API_KEY'))
-print("Cloudinary API Secret:", os.environ.get('CLOUDINARY_API_SECRET'))
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
