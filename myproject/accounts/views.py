@@ -36,6 +36,9 @@ def terms_view(request):
 def how_it_works(request):
     return render(request, 'how_it_works.html')
 
+def how_it_works1(request):
+    return render(request, 'how_it_works1.html')
+
 
 
 

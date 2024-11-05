@@ -34,6 +34,7 @@ urlpatterns = [
     path('upload-paper/', views.upload_paper, name='upload_paper'),
     path('terms/', views.terms_view, name='terms'),
     path('how-it-works/', views.how_it_works, name='how_it_works'),
+    path('how-it-works1/', views.how_it_works1, name='how_it_works1'),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

@@ -1,40 +1,57 @@
 <html lang="en">
-    {% load static%}
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GetYourTutor - Home</title>
+    <title>How It Works - GetYourTutor</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&amp;display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            background: linear-gradient(135deg, #FFDAB9 0%, #FFE5B4 100%);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
+
         main {
             flex: 1;
-            padding-top: 30px;
-            padding-bottom: 50px; /* Extend the main section */
+            padding-top: 60px;
+            padding-bottom: 50px;
         }
+
+        .section-3d {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .section-3d:hover {
+            transform: translateY(-10px);
+        }
+
+        .bg-peach-light {
+            background: linear-gradient(135deg, #FFDDC1 0%, #FFC8A2 100%);
+        }
+
         .menu-icon {
             display: none;
         }
 
-        .h-10 mr-2{
-            height:100px;
-            padding-bottom:20px;
-        }
         @media (max-width: 768px) {
             .menu-icon {
                 display: block;
             }
+
             .nav-links {
                 display: none;
             }
+
             .nav-links.active {
                 display: block;
                 position: absolute;
@@ -44,6 +61,7 @@
                 background-color: white;
                 text-align: center;
             }
+
             .nav-links a {
                 display: block;
                 padding: 10px;
@@ -52,29 +70,26 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-r from-purple-300 via-pink-300 to-blue-200">
+<body>
 
-<!-- Header Section -->
+<!-- Header Section (Reuse from the Home Page) -->
 <header class="flex justify-between items-center bg-white p-4 w-full fixed top-0">
     <div class="flex items-center justify-between w-full">
         <!-- Left section: Logo and Site Name -->
         <div class="flex items-center">
-            <!-- Logo -->
             <i class="fas fa-graduation-cap text-5xl text-black"></i>
-            <!-- Site Name -->
-            <div class="text-xl font-bold">
-                GetYourTutor
-            </div>
+            <div class="text-xl font-bold">GetYourTutor</div>
         </div>
 
-        <!-- Right section: Navigation Links and Menu Icon -->
+        <!-- Right section: Navigation Links -->
         <div class="hidden md:flex md:flex-row space-x-4 md:ml-auto">
             <a href="{% url 'home' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Home</a>
+
             <a href="{% url 'login' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Login</a>
             <a href="{% url 'student_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Register</a>
             <a href="{% url 'teacher_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Register</a>
             <a href="{% url 'about_us' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">About Us</a>
-            <a href="{% url 'how_it_works1'%}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">How it works</a>
+            <a href="{% url 'how_it_works' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">How it works</a>
         </div>
 
         <!-- Hamburger Menu Icon for mobile -->
@@ -87,11 +102,12 @@
 <!-- Mobile Menu -->
 <div class="nav-links hidden flex-col md:hidden space-y-4 absolute bg-white w-full left-0 top-16">
     <a href="{% url 'home' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Home</a>
+    
     <a href="{% url 'login' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Login</a>
     <a href="{% url 'student_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Register</a>
     <a href="{% url 'teacher_register' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Register</a>
     <a href="{% url 'about_us' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">About Us</a>
-    <a href="{% url 'how_it_works1'%}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">How it works</a>
+    <a href="{% url 'how_it_works'%}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">How it works</a>
 </div>
 
 
@@ -104,52 +120,41 @@
 </script>
 
 
-<!-- Body Section -->
-<!-- Body Section -->
-<main class="flex flex-col items-center justify-center w-full mt-20 px-4">
+<main class="flex flex-col items-center justify-center w-full mt-20 px-4 bg-peach-light">
     <div class="text-center max-w-3xl">
-        <div class="mb-6">
-            <i class="fas fa-graduation-cap text-6xl text-black"></i>
+        <h1 class="text-4xl font-bold text-gray-800 mb-6">How It Works</h1>
+        <p class="text-lg text-gray-700 mb-12">Our simple process ensures that you connect with the best tutors in no time!</p>
+
+        <!-- Section 1: Search for Tutors -->
+        <div class="section-3d">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">1. Search for Tutors</h2>
+            <p class="text-lg text-gray-600 mb-4">After registering as a student, navigate to your personalized dashboard and click on the "Search Teachers" link. You'll be able to search based on <strong>District</strong>, <strong>Teaching Medium</strong> (English, Sinhala, Tamil), and <strong>Subject</strong>.</p>
+            <p class="text-lg text-gray-600">Available teachers, along with their ratings, town, and other details, will be displayed for you to choose from.</p>
         </div>
-        <h1 class="text-5xl font-bold text-black mb-4">
-            GetYourTutor
-        </h1>
-        <p class="text-lg text-gray-700 mb-8">
-            Connecting students with top tutors who've been where you are.
-        </p>
-        <p class="text-base text-gray-700 mb-8 leading-relaxed">
-            For students facing the challenges of O-Level or A-Level exams, success is just a step away. At <strong>GetYourTutor</strong>, we match you with tutors who have recently excelled in their own A-Level exams and know exactly what it takes to succeed. Whether you're looking for help with tricky subjects, exam strategies, or personalized study plans, our experienced tutors are here to guide you.
-        </p>
-        <p class="text-base text-gray-700 mb-8 leading-relaxed">
-            And if you're a recent A-Level graduate with a passion for teaching and a track record of academic excellence, we welcome you to join our community and help the next generation of students achieve their goals.
-        </p>
-        <div class="flex justify-center space-x-4">
-            <a href="{% url 'student_register' %}" class="bg-green-500 text-white px-6 py-3 rounded-full flex items-center space-x-2">
-                <i class="fas fa-rocket"></i>
-                <span>Find Your Perfect Tutor</span>
-            </a>
-            <a href="{% url 'teacher_register' %}" class="bg-gray-200 text-green-500 px-6 py-3 rounded-full flex items-center space-x-2">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <span>Join as a Tutor</span>
-            </a>
+
+        <!-- Section 2: Request and Connect with a Tutor -->
+        <div class="section-3d">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">2. Request and Connect</h2>
+            <p class="text-lg text-gray-600 mb-4">Click "Request a Teacher" once you've found the perfect tutor. Our admin team will contact both the student and teacher to confirm the first class, which is <strong>free of charge</strong>.</p>
+            <p class="text-lg text-gray-600">Once confirmed, the teacher will appear in your dashboard, and you will need to pay a one-time connection fee of <strong>Rs. 2500</strong>. This allows you to start learning with your selected tutor.</p>
         </div>
+
+        <!-- Section 3: Enjoy Your First Class and Continue Learning -->
+        <div class="section-3d">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">3. Enjoy Learning!</h2>
+            <p class="text-lg text-gray-600 mb-4">The first class is free, and you can decide with your tutor whether future classes will be held <strong>online</strong> or <strong>in person</strong>, based on your convenience.</p>
+            <p class="text-lg text-gray-600">Our tutors are high achievers, many of whom have excelled in their GCE A-Level exams, ensuring you're in great hands.</p>
+        </div>
+
+        <!-- Additional Feature: Forums -->
+        <div class="section-3d">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">4. Get Extra Help with Forums</h2>
+            <p class="text-lg text-gray-600 mb-4">Need help outside of class? Head to our <strong>Forum</strong> where you can ask questions, share resources, and get answers from both teachers and fellow students.</p>
+            <p class="text-lg text-gray-600">Browse by subject to find the help you need anytime.</p>
+        </div>
+
     </div>
 </main>
-
-<!-- How It Works Section -->
-<section class="bg-gray-100 py-12 mt-12 w-full flex flex-col items-center">
-    <div class="text-center max-w-3xl">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">Want to Know More About How It Works?</h2>
-    <p class="text-lg text-gray-600 mb-8 max-w-xl text-center leading-relaxed">
-        At <strong>GetYourTutor</strong>, we make it easy for students to connect with the best tutors, whether you're preparing for exams or need extra help with your studies. Click below to explore the full process and see how we can help you reach your academic goals.
-    </p>
-    </div>
-    <a href="{% url 'how_it_works1' %}" class="bg-blue-500 text-white px-8 py-3 rounded-full flex items-center space-x-2 hover:bg-blue-600 transition duration-300">
-        <span>Learn More</span>
-        <i class="fas fa-arrow-right"></i>
-    </a>
-    
-</section>
 
 <!-- Footer Section -->
 <footer class="footer bg-white text-gray-700 py-4 w-full">
@@ -161,8 +166,7 @@
             <ul class="flex justify-center space-x-4">
                 <li><a href="{% url 'student_register' %}" class="hover:underline">Student Register</a></li>
                 <li><a href="{% url 'teacher_register' %}" class="hover:underline">Teacher Register</a></li>
-                <li><a href="{%  url 'about_us' %}" class="hover:underline">About Us</a></li>
-
+                <li><a href="{% url 'about_us' %}" class="hover:underline">About Us</a></li>
             </ul>
         </div>
 
@@ -171,8 +175,9 @@
             <p>Phone: +94 70 788 8398</p>
             <p>WhatsApp: <i class="fab fa-whatsapp text-green-500"></i> +94 70 788 8398</p>
 
-        <div class="footer-bottom mt-4 border-t pt-4">
-            <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+            <div class="footer-bottom mt-4 border-t pt-4">
+                <p>&copy; 2024 GetYourTutor. All Rights Reserved.</p>
+            </div>
         </div>
     </div>
 </footer>

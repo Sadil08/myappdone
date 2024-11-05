@@ -74,7 +74,8 @@
         </div>
 
         <div class="hidden md:flex md:flex-row space-x-4 md:ml-auto">
-            <a href="{% url 'student_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Dashboard</a>
+            <a href="{% url 'student_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Dashboard</a>
+            <a href="{% url 'teacher_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Dashboard</a>
             <a href="{% url 'logout' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Logout</a>
         </div>
 
@@ -86,7 +87,8 @@
 
 <!-- Mobile Menu -->
 <div class="nav-links hidden flex-col md:hidden space-y-4 absolute bg-white w-full left-0 top-16">
-    <a href="{% url 'student_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Dashboard</a>
+    <a href="{% url 'student_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Student Dashboard</a>
+    <a href="{% url 'teacher_dashboard' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Teacher Dashboard</a>   
     <a href="{% url 'logout' %}" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded">Logout</a>
 </div>
 
@@ -156,8 +158,9 @@
 
         <div class="footer-links mt-4">
             <ul class="flex justify-center space-x-4">
-                <li><a href="{% url 'student_dashboard' %}" class="hover:underline">Dashboard</a></li>
-                <li><a href="{% url 'search_teachers' %}" class="hover:underline">Search Teachers</a></li>
+                <li><a href="{% url 'student_dashboard' %}" class="hover:underline">Student Dashboard</a></li>
+                <li><a href="{% url 'teacher_dashboard' %}" class="hover:underline">Teacher Dashboard</a></li>
+
             </ul>
         </div>
 
