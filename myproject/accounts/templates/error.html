@@ -99,10 +99,13 @@
     }
 </script>
 
-
+<main class="flex flex-col items-center justify-center w-full mt-20 px-4">
+    <div class="text-center max-w-3xl">
     <h2>Error</h2>
     <p>{{ message }}</p>
-    <a href="{% url 'login' %}">Go to Login</a>
+    <a href="{% url 'login' %}"  class="hover:underline">Go to Login</a>
+    </div>
+</main>
 <!-- Footer Section -->
 <footer class="footer bg-white text-gray-700 py-4 w-full">
     <div class="text-center">
@@ -113,7 +116,7 @@
             <ul class="flex justify-center space-x-4">
                 <li><a href="{% url 'student_register' %}" class="hover:underline">Student Register</a></li>
                 <li><a href="{% url 'teacher_register' %}" class="hover:underline">Teacher Register</a></li>
-                <li><a href="#" class="hover:underline">About Us</a></li>
+                <li><a href="{%  url 'about_us' %}" class="hover:underline">About Us</a></li>
             </ul>
         </div>
 

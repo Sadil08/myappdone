@@ -75,10 +75,12 @@ class CustomUser(AbstractUser):
         ('tamil', 'Tamil Medium'),
     )
     medium = models.CharField(max_length=20, choices=MEDIUM_CHOICES)  # Teaching Medium
-    description = models.CharField(max_length=120, null = True, blank = True)  # Optional field for teacher description
-        
+    description = models.CharField(max_length=300, null = True, blank = True)  # Optional field for teacher description
+
+       
     def save(self, *args, **kwargs):
         is_new = self.pk is None
+
         super().save(*args, **kwargs)  # Save first to ensure we have a username
 
         if is_new:  # Only for new instances
